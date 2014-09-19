@@ -1,0 +1,2 @@
+user: giantswarm
+pass: fireant
