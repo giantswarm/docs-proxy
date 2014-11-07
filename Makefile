@@ -3,12 +3,19 @@
 PROJECT=docs-auth
 registry=registry.giantswarm.io
 name=docs-auth
+VERSION=$(cat ./VERSION)
 
 run:
-	docker run --name=$(name) --rm -p 80:80 $(registry)/$(PROJECT)
+	docker run --name=$(name) --rm -p 80:80 \
+		-e UPSTREAM_PORT_8000_TCP_ADDR=$(UPSTREAM_PORT_8000_TCP_ADDR) \
+		-e UPSTREAM_PORT_8000_TCP_PORT=$(UPSTREAM_PORT_8000_TCP_PORT) \
+		-e SITESEARCH_PORT_9200_TCP_ADDR=$(SITESEARCH_PORT_9200_TCP_ADDR) \
+		-e SITESEARCH_PORT_9200_TCP_PORT=$(SITESEARCH_PORT_9200_TCP_PORT) \
+		$(registry)/$(PROJECT)
 
 build:
 	docker build -t $(registry)/$(PROJECT) .
+	docker tag $(registry)/$(PROJECT) "$(registry)/$(PROJECT):$(VERSION)"
 
 delete:
 	docker stop $(name)
