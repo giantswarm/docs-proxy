@@ -13,6 +13,8 @@ ADD ./nginx.conf /etc/nginx/
 ADD ./htpasswd /etc/nginx/
 ADD ./run.sh /
 
+ADD ./content /www
+
 EXPOSE 80
 
 CMD ["/run.sh"]
