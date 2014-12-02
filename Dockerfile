@@ -10,7 +10,6 @@ RUN apt-get update -qq && apt-get -y -qq install nginx
 
 RUN rm -v /etc/nginx/nginx.conf
 ADD ./nginx.conf /etc/nginx/
-ADD ./htpasswd /etc/nginx/
 ADD ./htpasswd_admin /etc/nginx/
 ADD ./run.sh /
 
