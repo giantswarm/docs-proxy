@@ -21,8 +21,8 @@ sed -i "s/\%\%SITESEARCH_IP\%\%/${SITESEARCH_PORT_9200_TCP_ADDR}/" /etc/nginx/ng
 sed -i "s/\%\%SITESEARCH_PORT\%\%/${SITESEARCH_PORT_9200_TCP_PORT}/" /etc/nginx/nginx.conf
 
 # debugging
-echo ""
-cat /etc/nginx/nginx.conf
-echo ""
+#echo ""
+#cat /etc/nginx/nginx.conf
+#echo ""
 
 exec nginx
