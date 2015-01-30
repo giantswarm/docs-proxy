@@ -1,4 +1,4 @@
-# docs-auth
+# docs-proxy
 
 This repository represents the Documentation proxy server component.
 

@@ -2,7 +2,7 @@
 
 REGISTRY=registry.giantswarm.io
 COMPANY=giantswarm
-PROJECT=docs-auth
+PROJECT=docs-proxy
 
 
 build:
