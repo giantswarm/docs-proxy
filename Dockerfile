@@ -2,11 +2,16 @@
 #
 # VERSION 0.0.1
 
-FROM ubuntu:14.04
+FROM debian:wheezy
 
-MAINTAINER Timo Derstappen
+MAINTAINER Timo Derstappen, Marian Steinbach <marian@giantswarm.io>
 
-RUN apt-get update -qq && apt-get -y -qq install nginx
+ENV DEBIAN_FRONTEND noninteractive
+
+RUN apt-get update -q && \
+    apt-get -y -q install nginx && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 RUN rm -v /etc/nginx/nginx.conf
 ADD ./nginx.conf /etc/nginx/
