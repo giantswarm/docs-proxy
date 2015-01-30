@@ -1,14 +1,17 @@
-## Docs user
-user: giantswarm
-pass: fireant
+# docs-auth
 
+This repository represents the Documentation proxy server component.
+
+Please refer to the [docs](https://git.giantswarm.io/giantswarm/docs) repository for more context and explanation on how to run this locally with other related components.
 
 ## Admin access
 
-useradmin
-e4dfbjb3rohi8qpoadsffodin
+To access some Search status URLs, use these credentials:
 
-Allows for access to these monitoring URLs:
+User: admin
+Password: e4dfbjb3rohi8qpoadsffodin
+
+Monitoring URLs
 
  * /api/search/status
  * /api/search/stats
