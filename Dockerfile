@@ -19,6 +19,10 @@ RUN apt-get update -q && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
+
+RUN ln -sf /dev/stdout /var/log/nginx/access.log
+RUN ln -sf /dev/stderr /var/log/nginx/error.log
+
 RUN rm -v /etc/nginx/nginx.conf
 ADD ./nginx.conf /etc/nginx/
 ADD ./htpasswd_admin /etc/nginx/
