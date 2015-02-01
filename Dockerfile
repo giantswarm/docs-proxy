@@ -6,6 +6,8 @@ FROM debian:wheezy
 
 MAINTAINER Timo Derstappen, Marian Steinbach <marian@giantswarm.io>
 
+RUN echo `date` > /cache_breaker.txt
+
 ENV DEBIAN_FRONTEND noninteractive
 
 # configure apt
