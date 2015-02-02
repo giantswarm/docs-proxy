@@ -2,7 +2,7 @@
 
 This repository represents the Documentation proxy server component.
 
-Please refer to the [docs](https://git.giantswarm.io/giantswarm/docs) repository for more context and explanation on how to run this locally with other related components.
+Please refer to the [docs](https://github.com/giantswarm/docs) repository for more context and explanation on how to run this locally with other related components.
 
 ## Admin access
 
