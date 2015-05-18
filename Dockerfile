@@ -27,10 +27,9 @@ RUN ln -sf /dev/stderr /var/log/nginx/error.log
 RUN rm -v /etc/nginx/nginx.conf
 ADD ./nginx.conf /etc/nginx/
 ADD ./htpasswd_admin /etc/nginx/
-ADD ./run.sh /
 
 ADD ./content /www
 
 EXPOSE 80
 
-CMD ["/run.sh"]
+CMD ["nginx"]
