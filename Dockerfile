@@ -18,13 +18,11 @@ ENV NGINX_VERSION 1.9.0-1~jessie
 RUN apt-get update -q && \
     apt-get -y -q --no-install-recommends install nginx=${NGINX_VERSION} && \
     apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+    rm -rf /var/lib/apt/lists/* && \
+	ln -sf /dev/stdout /var/log/nginx/access.log && \
+	ln -sf /dev/stderr /var/log/nginx/error.log && \
+	rm -v /etc/nginx/nginx.conf
 
-
-RUN ln -sf /dev/stdout /var/log/nginx/access.log
-RUN ln -sf /dev/stderr /var/log/nginx/error.log
-
-RUN rm -v /etc/nginx/nginx.conf
 ADD ./nginx.conf /etc/nginx/
 ADD ./htpasswd_admin /etc/nginx/
 
