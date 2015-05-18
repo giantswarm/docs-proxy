@@ -1,6 +1,5 @@
 # nginx HTTP Server
 #
-# VERSION 0.0.1
 
 FROM debian:jessie
 
@@ -26,10 +25,9 @@ RUN apt-get update -q && \
 
 ADD ./nginx.conf /etc/nginx/
 ADD ./htpasswd_admin /etc/nginx/
-ADD ./run.sh /
 
 ADD ./content /www
 
 EXPOSE 80
 
-CMD ["/run.sh"]
+CMD ["nginx"]
