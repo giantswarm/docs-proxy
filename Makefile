@@ -5,9 +5,8 @@ COMPANY=giantswarm
 PROJECT=docs-proxy
 
 
-build:
-	docker build -t $(REGISTRY)/$(COMPANY)/$(PROJECT) .
+docker-build:
+	docker build -t $(REGISTRY)/$(COMPANY)/$(PROJECT):latest .
 
-delete:
-	docker rm $(PROJECT)
-	docker rmi $(REGISTRY)/$(COMPANY)/$(PROJECT)
+docker-delete:
+	docker rmi $(REGISTRY)/$(COMPANY)/$(PROJECT):latest
