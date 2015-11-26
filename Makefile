@@ -4,10 +4,10 @@ REGISTRY=registry.giantswarm.io
 COMPANY=giantswarm
 PROJECT=docs-proxy
 
+default: docker-build
 
-build:
-	docker build -t $(REGISTRY)/$(COMPANY)/$(PROJECT) .
+docker-build:
+	docker build -t $(REGISTRY)/$(COMPANY)/$(PROJECT):latest .
 
-delete:
-	docker rm $(PROJECT)
-	docker rmi $(REGISTRY)/$(COMPANY)/$(PROJECT)
+docker-delete:
+	docker rmi $(REGISTRY)/$(COMPANY)/$(PROJECT):latest
