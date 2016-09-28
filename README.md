@@ -1,3 +1,5 @@
+#### WARNING: This is the legacy `firstgen` branch, documenting a phased-out Giant Swarm product. Please check out the `master` branch for content related to the current Giant Swarm offerings.
+
 # docs-proxy
 
 This repository represents the Documentation proxy server component.
