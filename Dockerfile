@@ -1,7 +1,7 @@
 # nginx HTTP Server
 #
 
-FROM nginx:latest
+FROM nginx:stable-alpine
 
 # remove default configuration
 RUN rm -r /etc/nginx/conf.d
