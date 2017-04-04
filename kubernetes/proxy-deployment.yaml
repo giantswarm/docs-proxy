@@ -1,0 +1,36 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  namespace: docs
+  name: proxy
+  labels:
+    app: docs
+    component: proxy
+spec:
+  replicas: 2
+  template:
+    metadata:
+      name: proxy
+      labels:
+        app: docs
+        component: proxy
+    spec:
+      volumes:
+        - name: giantswarm-cert
+          secret:
+            secretName: giantswarm-cert
+      containers:
+        - image: registry.giantswarm.io/giantswarm/docs-proxy:%%DOCKER_TAG%%
+          name: proxy
+
+          ports:
+            - containerPort: 8000
+              name: http
+
+          volumeMounts:
+            - name: giantswarm-cert
+              mountPath: /etc/nginx/certs
+              readOnly: true
+
+      imagePullSecrets:
+        - name: registry-pull-secret

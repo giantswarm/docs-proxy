@@ -1,1 +1,3 @@
 dev_setenv.sh
+giantswarm-cert.yaml
+secret.yaml
