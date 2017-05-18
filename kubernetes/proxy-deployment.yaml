@@ -32,5 +32,13 @@ spec:
               mountPath: /etc/nginx/certs
               readOnly: true
 
+          resources:
+            requests:
+              cpu: 0.2
+              memory: 10M
+            limits:
+              cpu: 0.5
+              memory: 30M
+
       imagePullSecrets:
         - name: registry-pull-secret
