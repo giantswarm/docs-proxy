@@ -1,6 +1,6 @@
 #!/bin/bash
 
-REGISTRY=registry.giantswarm.io
+REGISTRY=quay.io
 COMPANY=giantswarm
 PROJECT=docs-proxy
 

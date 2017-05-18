@@ -20,7 +20,7 @@ spec:
           secret:
             secretName: giantswarm-cert
       containers:
-        - image: registry.giantswarm.io/giantswarm/docs-proxy:%%DOCKER_TAG%%
+        - image: quay.io/giantswarm/docs-proxy:{{ .BuildInfo.SHA }}
           name: proxy
 
           ports:
