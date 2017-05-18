@@ -20,7 +20,7 @@ spec:
           secret:
             secretName: giantswarm-cert
       containers:
-        - image: registry.giantswarm.io/giantswarm/docs-proxy:%%DOCKER_TAG%%
+        - image: quay.io/giantswarm/docs-proxy:{{ .BuildInfo.SHA }}
           name: proxy
 
           ports:
@@ -31,6 +31,14 @@ spec:
             - name: giantswarm-cert
               mountPath: /etc/nginx/certs
               readOnly: true
+
+          resources:
+            requests:
+              cpu: 0.2
+              memory: 10M
+            limits:
+              cpu: 0.5
+              memory: 30M
 
       imagePullSecrets:
         - name: registry-pull-secret
