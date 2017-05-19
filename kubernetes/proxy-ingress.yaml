@@ -16,6 +16,14 @@ spec:
           serviceName: proxy
           servicePort: 8000
         path: /
+  - host: docs.giantswarm.io
+    http:
+      paths:
+      - backend:
+          serviceName: proxy
+          servicePort: 8000
+        path: /
   tls:
   - hosts:
     - docs-g8s.giantswarm.io
+    - docs.giantswarm.io
