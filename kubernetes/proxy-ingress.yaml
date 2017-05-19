@@ -9,13 +9,6 @@ metadata:
     ingress.kubernetes.io/ssl-passthrough: "true"
 spec:
   rules:
-  - host: docs-g8s.giantswarm.io
-    http:
-      paths:
-      - backend:
-          serviceName: proxy
-          servicePort: 8000
-        path: /
   - host: docs.giantswarm.io
     http:
       paths:
@@ -25,5 +18,4 @@ spec:
         path: /
   tls:
   - hosts:
-    - docs-g8s.giantswarm.io
     - docs.giantswarm.io
