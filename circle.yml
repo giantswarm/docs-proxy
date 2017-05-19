@@ -15,6 +15,6 @@ test:
 
 deployment:
   master:
-    branch: quay-k8s
+    branch: master
     commands:
       - ./architect deploy
