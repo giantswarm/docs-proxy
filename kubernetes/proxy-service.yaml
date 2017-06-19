@@ -9,7 +9,7 @@ metadata:
 spec:
   ports:
     - port: 8000
-      targetPort: http
+      targetPort: 8000
   selector:
     app: docs
     component: proxy
