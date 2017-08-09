@@ -41,4 +41,4 @@ spec:
               memory: 30M
 
       imagePullSecrets:
-        - name: registry-pull-secret
+        - name: docs-proxy-pull-secret
