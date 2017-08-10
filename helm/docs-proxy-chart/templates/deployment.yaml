@@ -21,7 +21,7 @@ spec:
           secret:
             secretName: giantswarm-cert
       containers:
-        - image: quay.io/giantswarm/docs-proxy:{{ .SHA }}
+        - image: quay.io/giantswarm/docs-proxy:[[ .SHA ]]
           name: proxy
 
           ports:
