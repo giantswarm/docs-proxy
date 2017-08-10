@@ -20,7 +20,7 @@ spec:
           secret:
             secretName: giantswarm-cert
       containers:
-        - image: quay.io/giantswarm/docs-proxy:{{ .BuildInfo.SHA }}
+        - image: quay.io/giantswarm/docs-proxy:[[ .SHA ]]
           name: proxy
 
           ports:
@@ -41,4 +41,4 @@ spec:
               memory: 30M
 
       imagePullSecrets:
-        - name: registry-pull-secret
+        - name: docs-proxy-pull-secret
