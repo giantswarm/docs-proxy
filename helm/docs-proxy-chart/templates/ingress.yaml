@@ -5,7 +5,6 @@ metadata:
   namespace: docs
   labels:
     app: docs
-    repo: giantswarm/docs-proxy
   annotations:
     ingress.kubernetes.io/ssl-passthrough: "true"
 spec:

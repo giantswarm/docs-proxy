@@ -6,7 +6,6 @@ metadata:
   labels:
     app: docs
     component: proxy
-    repo: giantswarm/docs-proxy
 spec:
   ports:
     - port: 8000
