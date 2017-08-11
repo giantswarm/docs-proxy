@@ -7,7 +7,7 @@ PROJECT=docs-proxy
 default: docker-build
 
 docker-build:
-	docker build -t $(REGISTRY)/$(COMPANY)/$(PROJECT):latest .
+	docker build -t $(REGISTRY)/$(COMPANY)/$(PROJECT):dev .
 
 docker-delete:
-	docker rmi $(REGISTRY)/$(COMPANY)/$(PROJECT):latest
+	docker rmi $(REGISTRY)/$(COMPANY)/$(PROJECT):dev
