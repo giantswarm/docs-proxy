@@ -17,6 +17,7 @@ jobs:
           command: ./architect build
       
       - deploy:
+          name: Deploy (master only)
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
               ./architect deploy
