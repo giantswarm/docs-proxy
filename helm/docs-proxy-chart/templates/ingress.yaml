@@ -5,9 +5,6 @@ metadata:
   namespace: docs
   labels:
     app: docs
-  annotations:
-    ingress.kubernetes.io/ssl-passthrough: "true"
-    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
 spec:
   rules:
   - host: docs.giantswarm.io
@@ -20,3 +17,4 @@ spec:
   tls:
   - hosts:
     - docs.giantswarm.io
+    secretName: tls-secret
