@@ -34,11 +34,11 @@ spec:
 
           resources:
             requests:
-              cpu: 0.2
-              memory: 10M
+              cpu: 100m
+              memory: 30Mi
             limits:
-              cpu: 0.5
-              memory: 30M
+              cpu: 100m
+              memory: 30Mi
 
       imagePullSecrets:
         - name: docs-proxy-pull-secret
