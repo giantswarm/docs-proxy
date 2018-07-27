@@ -15,10 +15,6 @@ spec:
         app: docs
         component: proxy
     spec:
-      volumes:
-        - name: giantswarm-cert
-          secret:
-            secretName: giantswarm-cert
       containers:
         - image: quay.io/giantswarm/docs-proxy:[[ .SHA ]]
           name: proxy
@@ -26,11 +22,6 @@ spec:
           ports:
             - containerPort: 8000
               name: http
-
-          volumeMounts:
-            - name: giantswarm-cert
-              mountPath: /etc/nginx/certs
-              readOnly: true
 
           resources:
             requests:
