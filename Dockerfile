@@ -1,7 +1,4 @@
-# nginx HTTP Server
-#
-
-FROM nginx:stable-alpine
+FROM nginxinc/nginx-unprivileged:1.16-alpine
 
 # remove default configuration
 RUN rm -r /etc/nginx/conf.d
