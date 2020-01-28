@@ -10,3 +10,5 @@ ADD ./htpasswd_admin /etc/nginx/
 ADD ./content /www
 
 USER 101
+
+EXPOSE 8000
