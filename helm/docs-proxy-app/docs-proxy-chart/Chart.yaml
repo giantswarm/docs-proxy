@@ -1,3 +1,7 @@
-name: docs-proxy-chart
+apiVersion: v1
+name: docs-proxy-app
+namespace: docs
+appVersion: 0.0.1
+description: Reverse proxy that brings several documentation components together at https://docs.giantswarm.io/
 version: 1.0.0-[[ .SHA ]]
 home: https://github.com/giantswarm/docs-proxy
