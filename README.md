@@ -17,15 +17,19 @@ Monitoring URLs
  * /api/search/stats
  * /api/search/health
 
-## Kubernetes manifests
+## App
 
-Docs-proxy is deployed to the `docs` namespace in g8s.
+The `helm` folder contains an app chart.
 
-It depends on a registry pull secret being present in that namespace.
-An example registry-pull-secret is available in the docs repo.
+An additional Docker pull secret is required, like this:
 
-It also depends on a secret called `giantswarm-cert` being present. An example
-of this secret _is_ present in this repo at kubernetes/giantswarm-cert.yaml.dist
-
-It should containe base64 encrypted values for Giant Swarm's wildcard certificate
-so that the nginx container can properly SSL terminate.
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  namespace: docs
+  name: docs-proxy-pull-secret
+type: kubernetes.io/dockerconfigjson
+data:
+  .dockerconfigjson: <base64-data>
+```
