@@ -1,27 +1,43 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
+
 metadata:
-  namespace: docs
-  name: proxy
+  namespace: {{ .Release.Namespace }}
+  name: {{ .Values.name }}
   labels:
-    app: docs
-    component: proxy
+    app: {{ .Values.image.namespace }}
+    component: {{ .Values.image.names }}
+
 spec:
   replicas: 2
+  revisionHistoryLimit: 2
+
+  selector:
+    matchLabels:
+      app: {{ .Values.image.namespace }}
+      component: {{ .Values.image.name }}
+
   template:
     metadata:
       name: proxy
       labels:
-        app: docs
-        component: proxy
+        app: {{ .Values.image.namespace }}
+        component: {{ .Values.image.name }}
     spec:
+      securityContext:
+        runAsUser: 1000
+
       containers:
-        - image: quay.io/giantswarm/docs-proxy:[[ .SHA ]]
-          name: proxy
+        - name: proxy
+          image: quay.io/giantswarm/{{ .Values.image.name }}:{{ .Values.image.sha }}
 
           ports:
             - containerPort: 8000
               name: http
+          
+          volumeMounts:
+            - mountPath: /var/cache/nginx
+              name: cache-volume
 
           resources:
             requests:
@@ -31,5 +47,21 @@ spec:
               cpu: 100m
               memory: 30Mi
 
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8000
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 30
+            timeoutSeconds: 2
+
       imagePullSecrets:
         - name: docs-proxy-pull-secret
+      
+      volumes:
+        - name: cache-volume
+          emptyDir: {}
+
+      serviceAccount: {{ .Values.name }}
+      serviceAccountName: {{ .Values.name }}

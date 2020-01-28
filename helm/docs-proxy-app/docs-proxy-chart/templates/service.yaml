@@ -1,15 +1,15 @@
 kind: Service
 apiVersion: v1
 metadata:
-  namespace: docs
-  name: proxy
+  namespace: {{ .Release.Namespace }}
+  name: {{ .Values.name }}
   labels:
-    app: docs
-    component: proxy
+    app: {{ .Values.image.namespace }}
+    component: {{ .Values.image.name }}
 spec:
   ports:
     - port: 8000
       targetPort: 8000
   selector:
-    app: docs
-    component: proxy
+    app: {{ .Values.image.namespace }}
+    component: {{ .Values.image.name }}
