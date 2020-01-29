@@ -2,14 +2,12 @@ kind: Service
 apiVersion: v1
 metadata:
   namespace: {{ .Release.Namespace }}
-  name: {{ .Values.name }}
+  name: {{ .Values.image.name }}
   labels:
-    app: {{ .Values.image.namespace }}
-    component: {{ .Values.image.name }}
+    app: {{ .Values.name }}
 spec:
   ports:
     - port: 8000
       targetPort: 8000
   selector:
-    app: {{ .Values.image.namespace }}
-    component: {{ .Values.image.name }}
+    app: {{ .Values.name }}

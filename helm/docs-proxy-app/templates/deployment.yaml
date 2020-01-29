@@ -5,8 +5,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
   name: {{ .Values.name }}
   labels:
-    app: {{ .Values.image.namespace }}
-    component: {{ .Values.image.names }}
+    app: {{ .Values.name }}
 
 spec:
   replicas: 2
@@ -14,21 +13,19 @@ spec:
 
   selector:
     matchLabels:
-      app: {{ .Values.image.namespace }}
-      component: {{ .Values.image.name }}
+      app: {{ .Values.name }}
 
   template:
     metadata:
       name: proxy
       labels:
-        app: {{ .Values.image.namespace }}
-        component: {{ .Values.image.name }}
+        app: {{ .Values.name }}
     spec:
       securityContext:
         runAsUser: 1000
 
       containers:
-        - name: proxy
+        - name: {{ .Values.image.name }}
           image: quay.io/giantswarm/{{ .Values.image.name }}:{{ .Values.image.sha }}
 
           ports:
