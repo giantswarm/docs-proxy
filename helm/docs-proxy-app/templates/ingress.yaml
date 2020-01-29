@@ -16,7 +16,7 @@ spec:
     http:
       paths:
       - backend:
-          serviceName: {{ .Values.image.name }}
+          serviceName: {{ .Values.name }}
           servicePort: 8000
         path: /
   tls:
