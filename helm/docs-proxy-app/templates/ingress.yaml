@@ -12,14 +12,19 @@ metadata:
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
 spec:
   rules:
-  - host: {{ .Values.hostname }}
-    http:
-      paths:
-      - backend:
-          serviceName: {{ .Values.name }}
-          servicePort: 8000
-        path: /
+    {{- $serviceName := .Values.name -}}
+    {{- range .Values.hostnames }}
+    - host: {{ . }}
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: {{ $serviceName }}
+              servicePort: 8000
+    {{- end }}
   tls:
     - hosts:
-      - {{ .Values.hostname }}
+      {{- range .Values.hostnames }}
+      - {{ . }}
+      {{- end }}
       secretName: {{ .Values.name }}
