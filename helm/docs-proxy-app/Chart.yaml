@@ -3,5 +3,5 @@ name: docs-proxy-app
 namespace: docs
 appVersion: 0.0.1
 description: Reverse proxy that brings several documentation components together at https://docs.giantswarm.io/
-version: 1.0.0-[[ .SHA ]]
+version: "[[.Version]]"
 home: https://github.com/giantswarm/docs-proxy
