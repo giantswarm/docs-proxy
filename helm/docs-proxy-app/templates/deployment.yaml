@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  namespace: {{ .Release.Namespace }}
+  name: {{ .Values.name }}
+  labels:
+    app: {{ .Values.name }}
+
+spec:
+  replicas: 2
+  revisionHistoryLimit: 2
+
+  selector:
+    matchLabels:
+      app: {{ .Values.name }}
+
+  template:
+    metadata:
+      name: proxy
+      labels:
+        app: {{ .Values.name }}
+    spec:
+      securityContext:
+        runAsUser: 1000
+
+      containers:
+        - name: {{ .Values.image.name }}
+          image: quay.io/giantswarm/{{ .Values.image.name }}:{{ .Values.image.sha }}
+
+          ports:
+            - containerPort: 8000
+              name: http
+          
+          volumeMounts:
+            - mountPath: /var/cache/nginx
+              name: cache-volume
+
+          resources:
+            requests:
+              cpu: 100m
+              memory: 30Mi
+            limits:
+              cpu: 100m
+              memory: 30Mi
+
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8000
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 30
+            timeoutSeconds: 2
+
+      imagePullSecrets:
+        - name: docs-proxy-pull-secret
+      
+      volumes:
+        - name: cache-volume
+          emptyDir: {}
+
+      serviceAccount: {{ .Values.name }}
+      serviceAccountName: {{ .Values.name }}

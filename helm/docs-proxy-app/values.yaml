@@ -1,0 +1,9 @@
+name: docs-proxy-app
+namespace: docs
+image:
+  name: docs-proxy
+  tag: "[[.Version]]"
+  sha: "[[.SHA]]"
+hostnames:
+- docs.giantswarm.io
+- docs.c68pn.k8s.gollum.westeurope.azure.gigantic.io
