@@ -18,9 +18,12 @@ spec:
       http:
         paths:
           - path: /
+            pathType: Prefix
             backend:
-              serviceName: {{ $serviceName }}
-              servicePort: 8000
+              service:
+                name: {{ $serviceName }}
+                port:
+                  number: 8000
     {{- end }}
   tls:
     - hosts:
