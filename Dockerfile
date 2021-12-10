@@ -6,7 +6,6 @@ USER 0
 RUN rm -r /etc/nginx/conf.d
 
 ADD ./nginx.conf /etc/nginx/
-ADD ./htpasswd_admin /etc/nginx/
 ADD ./content /www
 
 USER 101
