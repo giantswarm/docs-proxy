@@ -1,35 +1,17 @@
 # docs-proxy
 
-This repository represents the Documentation proxy server component.
+This repository provides an NGINX based proxy server for use in [docs.giantswarm.io](https://docs.giantswarm.io/).
 
-Please refer to the [docs](https://github.com/giantswarm/docs) repository for more context and explanation on how to run this locally with other related components.
+The main purpose is to
 
-## Admin access
+- Route requests to their respective backends.
+  - Route content URL requests to the content backend.
+  - Rest API documentation to the api-spec backend.
+  - Route search requests to the search API server.
+- Respond to requests for some historic URLs and URL patterns with redirects.
+- Set some common expires headers for cache control.
+- Set permissive CORS headers on RSS feeds.
 
-To access some Search status URLs, use these credentials:
+Please refer to the [giantswarm/docs](https://github.com/giantswarm/docs) repository for more context and explanation on how to run this locally with other related components.
 
-User: admin
-Password: e4dfbjb3rohi8qpoadsffodin
-
-Monitoring URLs
-
- * /api/search/status
- * /api/search/stats
- * /api/search/health
-
-## App
-
-The `helm` folder contains an app chart.
-
-An additional Docker pull secret is required, like this:
-
-```yaml
-apiVersion: v1
-kind: Secret
-metadata:
-  namespace: docs
-  name: docs-proxy-pull-secret
-type: kubernetes.io/dockerconfigjson
-data:
-  .dockerconfigjson: <base64-data>
-```
+The app is deployed as a Giant Swarm [App](https://docs.giantswarm.io/app-platform/). See the `helm` folder for details.
