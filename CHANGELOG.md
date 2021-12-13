@@ -7,8 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0] - 2021-12-13
+
 ### Changed
 
 - Updated README information
 
-[Unreleased]: https://github.com/giantswarm/docs-proxy/tree/master
+[Unreleased]: https://github.com/giantswarm/docs-proxy/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/giantswarm/docs-proxy/releases/tag/v1.1.0
