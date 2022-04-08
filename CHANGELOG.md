@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.2.1] - 2022-04-08
 
+- Fixed deployment to reference image tag using the modified schema.
+
 ## [1.2.0] - 2022-04-08
 
 - Added PodDisruptionBudget and pod anti-affinity config.
