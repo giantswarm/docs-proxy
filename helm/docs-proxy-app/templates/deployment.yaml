@@ -24,6 +24,16 @@ spec:
       securityContext:
         runAsUser: 1000
 
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app: {{ .Values.name }}
+              topologyKey: kubernetes.io/hostname
+            weight: 100
+
       containers:
         - name: {{ .Values.image.name }}
           image: quay.io/giantswarm/{{ .Values.image.name }}:{{ .Values.image.sha }}
