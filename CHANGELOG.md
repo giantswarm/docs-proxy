@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.2.0] - 2022-04-08
 
+- Added PodDisruptionBudget and pod anti-affinity config.
+- Updated CircleCI configuration.
+
 ## [1.1.1] - 2022-03-24
 
 ### Added
