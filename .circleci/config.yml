@@ -16,7 +16,6 @@ jobs:
           version: 20.10.11
       
       - architect/push-to-docker:
-          context: architect
           image: quay.io/giantswarm/docs-proxy
           tag-latest-branch: main
           username_envar: QUAY_USERNAME
