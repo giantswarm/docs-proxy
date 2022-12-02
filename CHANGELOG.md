@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.2] - 2022-12-02
+
 ## [1.2.1] - 2022-04-08
 
 - Fixed deployment to reference image tag using the modified schema.
@@ -28,7 +30,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Updated README information
 
-[Unreleased]: https://github.com/giantswarm/docs-proxy/compare/v1.2.1...HEAD
+[Unreleased]: https://github.com/giantswarm/docs-proxy/compare/v1.2.2...HEAD
+[1.2.2]: https://github.com/giantswarm/docs-proxy/compare/v1.2.1...v1.2.2
 [1.2.1]: https://github.com/giantswarm/docs-proxy/compare/v1.2.0...v1.2.1
 [1.2.0]: https://github.com/giantswarm/docs-proxy/compare/v1.1.1...v1.2.0
 [1.1.1]: https://github.com/giantswarm/docs-proxy/compare/v1.1.0...v1.1.1
