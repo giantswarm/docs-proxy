@@ -31,7 +31,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Reroute requests from `/searchapi` to `/internal-searchapi`, if `_oauth2_proxy` cookie is present.
 
-
 ## [1.2.3] - 2022-12-02
 
 ### Changed
