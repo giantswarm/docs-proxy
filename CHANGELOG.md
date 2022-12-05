@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Added internal search upstream endpoint.
+
+### Changed
+
+- Reroute requests from `/searchapi` to `/internal-searchapi`, if `_oauth2_proxy` cookie is present.
+
 ## [1.3.1] - 2022-12-05
 
 ### Changed
