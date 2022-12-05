@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.3.2] - 2022-12-05
+
 ### Added
 
 - Added internal search upstream endpoint.
@@ -68,7 +70,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Updated README information
 
-[Unreleased]: https://github.com/giantswarm/docs-proxy/compare/v1.3.1...HEAD
+[Unreleased]: https://github.com/giantswarm/docs-proxy/compare/v1.3.2...HEAD
+[1.3.2]: https://github.com/giantswarm/docs-proxy/compare/v1.3.1...v1.3.2
 [1.3.1]: https://github.com/giantswarm/docs-proxy/compare/v1.3.0...v1.3.1
 [1.3.0]: https://github.com/giantswarm/docs-proxy/compare/v1.2.3...v1.3.0
 [1.2.3]: https://github.com/giantswarm/docs-proxy/compare/v1.2.2...v1.2.3
