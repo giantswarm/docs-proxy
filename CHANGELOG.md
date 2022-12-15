@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Fix cors errors when using the search API
+
+### Added
+
+- Add intranet index to internal search calls
+
 ## [1.3.2] - 2022-12-05
 
 ### Added
