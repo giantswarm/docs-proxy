@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Removed
+
+- Remove internal search
+- Remove cors logic in `searchapi` location
+
 ## [1.3.4] - 2022-12-15
 
 ### Changed
