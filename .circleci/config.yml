@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  architect: giantswarm/architect@4.36.0
+  architect: giantswarm/architect@4.37.0
 
 workflows:
   build-workflow:
@@ -9,11 +9,6 @@ workflows:
       - architect/push-to-registries:
           context: architect
           name: push-to-registries
-          # Only push to private registries, not to China
-          push-to-quay: true
-          push-to-gsoci: false
-          push-to-docker: false
-          push-to-aliyun: false
           filters:
             tags:
               only: /.*/
