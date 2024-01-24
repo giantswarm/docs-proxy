@@ -7,5 +7,6 @@ hostnames:
 - docs.giantswarm.io
 - docs.c68pn.k8s.gollum.westeurope.azure.gigantic.io
 
-podSecurityStandards:
-  enforced: false
+global:
+  podSecurityStandards:
+    enforced: false
