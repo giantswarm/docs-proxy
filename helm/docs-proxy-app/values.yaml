@@ -6,6 +6,7 @@ image:
 hostnames:
 - docs.giantswarm.io
 - docs.c68pn.k8s.gollum.westeurope.azure.gigantic.io
+- docs.operations.awsprod.gigantic.io
 
 global:
   podSecurityStandards:
