@@ -23,6 +23,8 @@ spec:
     spec:
       securityContext:
         runAsUser: 1000
+        seccompProfile:
+          type: RuntimeDefault
 
       affinity:
         podAntiAffinity:
@@ -37,6 +39,14 @@ spec:
       containers:
         - name: {{ .Values.image.name }}
           image: quay.io/giantswarm/{{ .Values.image.name }}:{{ .Values.image.tag }}
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            seccompProfile:
+              type: RuntimeDefault
+            capabilities:
+              drop:
+                - ALL
 
           ports:
             - containerPort: 8000
