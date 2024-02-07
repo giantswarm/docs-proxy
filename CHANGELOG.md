@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Restrict security settings to prepate for K8s 1.25
+
 ## [1.5.2] - 2024-01-29
 
 ### Fixed
