@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.5.3] - 2024-02-07
+
 ### Changed
 
 - Restrict security settings to prepate for K8s 1.25
@@ -113,7 +115,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Updated README information
 
-[Unreleased]: https://github.com/giantswarm/docs-proxy/compare/v1.5.2...HEAD
+[Unreleased]: https://github.com/giantswarm/docs-proxy/compare/v1.5.3...HEAD
+[1.5.3]: https://github.com/giantswarm/docs-proxy/compare/v1.5.2...v1.5.3
 [1.5.2]: https://github.com/giantswarm/docs-proxy/compare/v1.5.1...v1.5.2
 [1.5.1]: https://github.com/giantswarm/docs-proxy/compare/v1.5.0...v1.5.1
 [1.5.0]: https://github.com/giantswarm/docs-proxy/compare/v1.4.1...v1.5.0
