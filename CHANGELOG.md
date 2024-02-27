@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.5.4] - 2024-02-27
 
+### Changed
+
+- Disallow bots for docs revamp
 ## [1.5.3] - 2024-02-07
 
 ### Changed
