@@ -5,8 +5,15 @@ image:
   tag: "[[.Version]]"
 hostnames:
 - docs.giantswarm.io
-- docs.c68pn.k8s.gollum.westeurope.azure.gigantic.io
 - docs.operations.awsprod.gigantic.io
+
+resources:
+  requests:
+    cpu: 10m
+    memory: 10M
+  limits:
+    cpu: 100m
+    memory: 50M
 
 global:
   podSecurityStandards:
