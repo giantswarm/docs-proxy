@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.5.5] - 2024-03-13
+
 ### Changed
 
 - Lower resource requests and limits
@@ -125,7 +127,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Updated README information
 
-[Unreleased]: https://github.com/giantswarm/docs-proxy/compare/v1.5.4...HEAD
+[Unreleased]: https://github.com/giantswarm/docs-proxy/compare/v1.5.5...HEAD
+[1.5.5]: https://github.com/giantswarm/docs-proxy/compare/v1.5.4...v1.5.5
 [1.5.4]: https://github.com/giantswarm/docs-proxy/compare/v1.5.3...v1.5.4
 [1.5.3]: https://github.com/giantswarm/docs-proxy/compare/v1.5.2...v1.5.3
 [1.5.2]: https://github.com/giantswarm/docs-proxy/compare/v1.5.1...v1.5.2
