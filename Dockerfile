@@ -1,4 +1,4 @@
-FROM gsoci.azurecr.io/giantswarm/nginx-unprivileged:1.26-alpine
+FROM gsoci.azurecr.io/giantswarm/nginx-unprivileged:1.27-alpine
 
 USER 0
 
