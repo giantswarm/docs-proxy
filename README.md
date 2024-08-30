@@ -6,7 +6,6 @@ The main purpose is to
 
 - Route requests to their respective backends.
   - Route content URL requests to the content backend.
-  - Rest API documentation to the api-spec backend.
   - Route search requests to the search API server.
 - Respond to requests for some historic URLs and URL patterns with redirects.
 - Set some common expires headers for cache control.

@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Removed
+
+- Remove proxying to api-spec server
+
+### Added
+
+- Add redirect to new api-spec location
+
 ## [1.5.5] - 2024-03-13
 
 ### Changed
@@ -19,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Disallow bots for docs revamp
+
 ## [1.5.3] - 2024-02-07
 
 ### Changed
