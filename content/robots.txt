@@ -1,3 +1,4 @@
 User-agent: *
+Disallow: /vintage/
 
-Disallow: /
+Sitemap: https://docs.giantswarm.io/sitemap.xml
