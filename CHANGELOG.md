@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.6.1] - 2024-12-05
 
+### Changed
+
+- Disallow vintage doc in robots
+
 ## [1.6.0] - 2024-08-30
 
 ### Removed
