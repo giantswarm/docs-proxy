@@ -1,5 +1,6 @@
 name: docs-proxy-app
 namespace: docs
+serviceType: managed
 image:
   name: docs-proxy
   tag: "[[.Version]]"
