@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Use image from gsoci.azurecr.io
+- Update NGINX to v1.29
 
 ## [1.6.1] - 2024-12-05
 
