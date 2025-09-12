@@ -38,7 +38,7 @@ spec:
 
       containers:
         - name: {{ .Values.image.name }}
-          image: quay.io/giantswarm/{{ .Values.image.name }}:{{ .Values.image.tag }}
+          image: gsoci.azurecr.io/giantswarm/{{ .Values.image.name }}:{{ .Values.image.tag }}
           securityContext:
             allowPrivilegeEscalation: false
             runAsNonRoot: true
