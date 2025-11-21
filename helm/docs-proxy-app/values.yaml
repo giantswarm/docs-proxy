@@ -15,6 +15,12 @@ resources:
     cpu: 100m
     memory: 50M
 
+ingress:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-giantswarm
+    kubernetes.io/tls-acme: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+
 global:
   podSecurityStandards:
     enforced: false
