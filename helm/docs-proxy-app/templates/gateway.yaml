@@ -1,0 +1,23 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: {{ .Values.name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ .Values.name }}
+spec:
+  hostnames:
+  {{- range .Values.hostnames }}
+  - {{ . }}
+  {{- end }}
+  parentRefs:
+  - name: giantswarm-default
+    namespace: envoy-gateway-system
+  rules:
+  - backendRefs:
+    - name: {{ .Values.name }}
+      port: 8000
+    matches:
+    - path:
+        type: PathPrefix
+        value: /
