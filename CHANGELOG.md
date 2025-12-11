@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.8.0] - 2025-12-11
+
+### Added
+
+- Added new HTTPRoute to the proxy to migrate to the Gateway API.
+
 ## [1.7.0] - 2025-10-17
 
 ### Added
@@ -157,7 +163,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Updated README information
 
-[Unreleased]: https://github.com/giantswarm/docs-proxy/compare/v1.7.0...HEAD
+[Unreleased]: https://github.com/giantswarm/docs-proxy/compare/v1.8.0...HEAD
+[1.8.0]: https://github.com/giantswarm/docs-proxy/compare/v1.7.0...v1.8.0
 [1.7.0]: https://github.com/giantswarm/docs-proxy/compare/v1.6.2...v1.7.0
 [1.6.2]: https://github.com/giantswarm/docs-proxy/compare/v1.6.1...v1.6.2
 [1.6.1]: https://github.com/giantswarm/docs-proxy/compare/v1.6.0...v1.6.1
