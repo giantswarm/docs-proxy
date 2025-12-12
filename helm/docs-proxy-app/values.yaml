@@ -2,7 +2,7 @@ name: docs-proxy-app
 namespace: docs
 image:
   name: docs-proxy
-  tag: "[[.Version]]"
+  tag: ""
 hostnames:
 - docs.giantswarm.io
 - docs.operations.awsprod.gigantic.io
