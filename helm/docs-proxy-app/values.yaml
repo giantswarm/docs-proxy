@@ -2,7 +2,7 @@ name: docs-proxy-app
 namespace: docs
 image:
   name: docs-proxy
-  tag: "[[.Version]]"
+  tag: ""
 hostnames:
 - docs.giantswarm.io
 - docs.operations.awsprod.gigantic.io
@@ -20,7 +20,3 @@ ingress:
     cert-manager.io/cluster-issuer: letsencrypt-giantswarm
     kubernetes.io/tls-acme: "true"
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-
-global:
-  podSecurityStandards:
-    enforced: false

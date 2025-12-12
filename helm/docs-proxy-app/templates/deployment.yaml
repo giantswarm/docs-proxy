@@ -4,8 +4,11 @@ kind: Deployment
 metadata:
   namespace: {{ .Release.Namespace }}
   name: {{ .Values.name }}
+  annotations:
+    ignore-check.kube-linter.io/no-read-only-root-fs: "nginx writes to the disk"
   labels:
     app: {{ .Values.name }}
+    {{- include "labels.common" . | nindent 4 }}
 
 spec:
   replicas: 2
@@ -38,7 +41,7 @@ spec:
 
       containers:
         - name: {{ .Values.image.name }}
-          image: gsoci.azurecr.io/giantswarm/{{ .Values.image.name }}:{{ .Values.image.tag }}
+          image: "gsoci.azurecr.io/giantswarm/{{ .Values.image.name }}:{{ include "image.tag" . }}"
           securityContext:
             allowPrivilegeEscalation: false
             runAsNonRoot: true

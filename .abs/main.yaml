@@ -1,0 +1,8 @@
+replace-app-version-with-git: true
+replace-chart-version-with-git: true
+
+generate-metadata: true
+chart-dir: ./helm/docs-proxy
+destination: ./build
+
+catalog-base-url: https://giantswarm.github.io/giantswarm-operations-platform-catalog/
