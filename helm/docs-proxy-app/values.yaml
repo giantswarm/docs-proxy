@@ -20,7 +20,3 @@ ingress:
     cert-manager.io/cluster-issuer: letsencrypt-giantswarm
     kubernetes.io/tls-acme: "true"
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-
-global:
-  podSecurityStandards:
-    enforced: false
