@@ -3,6 +3,7 @@ name: docs-proxy-app
 appVersion: 0.0.1
 description: Reverse proxy that brings several documentation components together at https://docs.giantswarm.io/
 annotations:
+  io.giantswarm.application.audience: giantswarm
   io.giantswarm.application.team: honeybadger
 version: 1.9.0
 home: https://github.com/giantswarm/docs-proxy
