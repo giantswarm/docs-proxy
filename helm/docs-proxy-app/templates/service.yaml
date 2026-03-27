@@ -4,10 +4,10 @@ metadata:
   namespace: {{ .Release.Namespace }}
   name: {{ .Values.name }}
   labels:
-    app: {{ .Values.name }}
+    {{- include "labels.common" . | nindent 4 }}
 spec:
   ports:
     - port: 8000
       targetPort: 8000
   selector:
-    app: {{ .Values.name }}
+    {{- include "labels.selector" . | nindent 4 }}

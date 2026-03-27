@@ -3,3 +3,5 @@ kind: ServiceAccount
 metadata:
   namespace: {{ .Release.Namespace }}
   name: {{ .Values.name }}
+  labels:
+    {{- include "labels.common" . | nindent 4 }}

@@ -7,7 +7,6 @@ metadata:
   annotations:
     ignore-check.kube-linter.io/no-read-only-root-fs: "nginx writes to the disk"
   labels:
-    app: {{ .Values.name }}
     {{- include "labels.common" . | nindent 4 }}
 
 spec:
@@ -16,13 +15,13 @@ spec:
 
   selector:
     matchLabels:
-      app: {{ .Values.name }}
+      {{- include "labels.selector" . | nindent 6 }}
 
   template:
     metadata:
       name: proxy
       labels:
-        app: {{ .Values.name }}
+        {{- include "labels.common" . | nindent 8 }}
     spec:
       securityContext:
         runAsUser: 1000
@@ -35,13 +34,13 @@ spec:
           - podAffinityTerm:
               labelSelector:
                 matchLabels:
-                  app: {{ .Values.name }}
+                  {{- include "labels.selector" . | nindent 18 }}
               topologyKey: kubernetes.io/hostname
             weight: 100
 
       containers:
         - name: {{ .Values.image.name }}
-          image: "gsoci.azurecr.io/giantswarm/{{ .Values.image.name }}:{{ include "image.tag" . }}"
+          image: "gsoci.azurecr.io/giantswarm/{{ .Values.image.name }}:{{ .Chart.AppVersion }}"
           securityContext:
             allowPrivilegeEscalation: false
             runAsNonRoot: true
@@ -54,7 +53,7 @@ spec:
           ports:
             - containerPort: 8000
               name: http
-          
+
           volumeMounts:
             - mountPath: /var/cache/nginx
               name: cache-volume
@@ -63,9 +62,11 @@ spec:
             requests:
               cpu: {{ .Values.resources.requests.cpu }}
               memory: {{ .Values.resources.requests.memory }}
+              ephemeral-storage: {{ .Values.resources.requests.ephemeralStorage }}
             limits:
               cpu: {{ .Values.resources.limits.cpu }}
               memory: {{ .Values.resources.limits.memory }}
+              ephemeral-storage: {{ .Values.resources.limits.ephemeralStorage }}
 
           livenessProbe:
             httpGet:
@@ -78,7 +79,7 @@ spec:
 
       imagePullSecrets:
         - name: docs-proxy-pull-secret
-      
+
       volumes:
         - name: cache-volume
           emptyDir: {}
