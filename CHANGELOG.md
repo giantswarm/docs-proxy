@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Prepare chart for use with Flux OCIRepository + HelmRelease.
+- Use `.Chart.AppVersion` for image tag instead of `.Chart.Version`.
+- Sanitize `.Chart.Version` in labels with `commit` and `branch` helpers.
+- Use common labels and selectors consistently on all resources.
+- Use binary suffix (`Mi`) for memory resource values.
+- Add `ephemeral-storage` resource requests and limits (Kyverno policy compliance).
+
+### Removed
+
+- Remove legacy `app` label from resources.
+- Remove unused `image.tag` helper template.
+
 ## [1.9.0] - 2025-12-12
 
 ### Removed

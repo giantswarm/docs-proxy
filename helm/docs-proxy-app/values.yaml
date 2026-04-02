@@ -2,7 +2,6 @@ name: docs-proxy-app
 namespace: docs
 image:
   name: docs-proxy
-  tag: ""
 hostnames:
 - docs.giantswarm.io
 - docs.operations.awsprod.gigantic.io
@@ -10,10 +9,12 @@ hostnames:
 resources:
   requests:
     cpu: 10m
-    memory: 10M
+    memory: 10Mi
+    ephemeralStorage: 50Mi
   limits:
     cpu: 100m
-    memory: 50M
+    memory: 50Mi
+    ephemeralStorage: 200Mi
 
 ingress:
   annotations:

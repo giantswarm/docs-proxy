@@ -13,9 +13,6 @@
             "properties": {
                 "name": {
                     "type": "string"
-                },
-                "tag": {
-                    "type": "string"
                 }
             }
         },
@@ -55,6 +52,9 @@
                         },
                         "memory": {
                             "type": "string"
+                        },
+                        "ephemeralStorage": {
+                            "type": "string"
                         }
                     }
                 },
@@ -65,6 +65,9 @@
                             "type": "string"
                         },
                         "memory": {
+                            "type": "string"
+                        },
+                        "ephemeralStorage": {
                             "type": "string"
                         }
                     }

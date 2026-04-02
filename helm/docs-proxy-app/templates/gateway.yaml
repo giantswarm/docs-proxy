@@ -4,7 +4,7 @@ metadata:
   name: {{ .Values.name }}
   namespace: {{ .Release.Namespace }}
   labels:
-    app: {{ .Values.name }}
+    {{- include "labels.common" . | nindent 4 }}
 spec:
   hostnames:
   {{- range .Values.hostnames }}
