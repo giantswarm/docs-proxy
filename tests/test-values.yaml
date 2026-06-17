@@ -1,0 +1,4 @@
+---
+# Minimal Helm values for the app-test-suite build-chart step. The cluster
+# smoke is skipped (see .ats/main.yaml), so this only needs to let the chart
+# render and lint -- no per-deployment overrides are required.

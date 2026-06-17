@@ -1,0 +1,22 @@
+# app-test-suite config. Consumed by the generated `run-tests-with-ats`
+# CircleCI job (execute-chart-tests) for the docs-proxy chart.
+#
+# The cluster test steps are skipped on purpose. The docs-proxy chart renders a
+# Gateway API HTTPRoute (gateway.networking.k8s.io) unconditionally. A bare
+# app-test-suite kind smoke fails at install (the Gateway API CRDs are not
+# present on a vanilla kind cluster), so a kind smoke is not a meaningful
+# validation model here.
+#
+# What still runs and gates the PR: the build-chart job (app-build-suite lint +
+# package + values.schema.json validation). Full deployment is validated
+# against the operations cluster via the App CR, not an ATS kind smoke.
+#
+# To turn on a real smoke later: pre-install the Gateway API CRDs in a
+# tests/ats conftest, drop `smoke` from skip-steps, and add a chart deploy with
+# tests/test-values.yaml.
+app-tests-app-config-file: tests/test-values.yaml
+app-tests-deploy-namespace: docs-proxy
+
+smoke-tests-cluster-type: kind
+
+skip-steps: [smoke,functional,upgrade]
