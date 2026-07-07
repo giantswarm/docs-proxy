@@ -19,25 +19,6 @@
                 }
             }
         },
-        "ingress": {
-            "type": "object",
-            "properties": {
-                "annotations": {
-                    "type": "object",
-                    "properties": {
-                        "cert-manager.io/cluster-issuer": {
-                            "type": "string"
-                        },
-                        "kubernetes.io/tls-acme": {
-                            "type": "string"
-                        },
-                        "nginx.ingress.kubernetes.io/force-ssl-redirect": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
         "name": {
             "type": "string"
         },

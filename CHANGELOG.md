@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Use `.Chart.AppVersion` instead of `.Chart.Version` for the `application.giantswarm.io/branch` and `application.giantswarm.io/commit` labels and for the container image tag. When deployed as an OCI chart via Flux, the chart version carries build metadata (e.g. `1.9.7+bf8b0e6012b2`); the `+` produced invalid Kubernetes label values and an unpullable image tag. `.Chart.AppVersion` holds the clean release tag (`replace-app-version-with-git` is enabled), as recommended by the App Build Suite migration guide.
 
+### Removed
+
+- Remove the nginx `Ingress` template (and its `ingress` values/schema). Routing is handled by the Gateway API `HTTPRoute`; our clusters no longer run an nginx ingress controller (only the `alb` IngressClass exists), so the chart's hardcoded `ingressClassName: nginx` was rejected by the AWS Load Balancer Controller admission webhook (`IngressClass "nginx" not found`), which blocked HelmRelease installs.
+
 ## [1.9.1] - 2026-05-18
 
 ## [1.9.0] - 2025-12-12
