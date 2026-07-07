@@ -18,8 +18,8 @@ Common labels
 */}}
 {{- define "labels.common" -}}
 {{ include "labels.selector" . }}
-application.giantswarm.io/branch: {{ .Chart.Version | replace "#" "-" | replace "/" "-" | replace "." "-" | trunc 63 | trimSuffix "-" | quote }}
-application.giantswarm.io/commit: {{ .Chart.Version | quote }}
+application.giantswarm.io/branch: {{ .Chart.AppVersion | replace "#" "-" | replace "/" "-" | replace "." "-" | trunc 63 | trimSuffix "-" | quote }}
+application.giantswarm.io/commit: {{ .Chart.AppVersion | quote }}
 app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
 application.giantswarm.io/team: {{ index .Chart.Annotations "io.giantswarm.application.team" | quote }}
 helm.sh/chart: {{ include "chart" . | quote }}
@@ -40,6 +40,6 @@ Define image tag.
 {{- if .Values.image.tag }}
 {{- .Values.image.tag }}
 {{- else }}
-{{- .Chart.Version }}
+{{- .Chart.AppVersion }}
 {{- end }}
 {{- end }}
