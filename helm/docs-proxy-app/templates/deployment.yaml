@@ -54,7 +54,7 @@ spec:
           ports:
             - containerPort: 8000
               name: http
-          
+
           volumeMounts:
             - mountPath: /var/cache/nginx
               name: cache-volume
@@ -80,7 +80,7 @@ spec:
 
       imagePullSecrets:
         - name: docs-proxy-pull-secret
-      
+
       volumes:
         - name: cache-volume
           emptyDir: {}
