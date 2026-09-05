@@ -1,20 +1,21 @@
-# app-test-suite config. Consumed by the generated `run-tests-with-ats`
-# CircleCI job (execute-chart-tests) for the docs-proxy chart.
+# app-test-suite (ATS >= 1.0) config, consumed by the generated
+# `run-tests-with-ats` CircleCI job (execute-chart-tests) for the
+# docs-proxy-app chart. The job creates a kind cluster; ATS applies its bundled
+# CRDs (/etc/ats/crds, Gateway API included, which the chart's HTTPRoute
+# needs), installs the packaged chart with `helm upgrade --install --wait`
+# (tests/test-values.yaml, the namespace below) and runs `pytest -m smoke` in
+# tests/ats.
 #
-# The cluster test steps are skipped on purpose. The docs-proxy chart renders a
-# Gateway API HTTPRoute (gateway.networking.k8s.io) unconditionally. A bare
-# app-test-suite kind smoke fails at install (the Gateway API CRDs are not
-# present on a vanilla kind cluster), so a kind smoke is not a meaningful
-# validation model here.
-#
-# What still runs and gates the PR: the build-chart job (app-build-suite lint +
-# package + values.schema.json validation). Full deployment is validated
-# against the operations cluster via the App CR, not an ATS kind smoke.
-#
-# To turn on a real smoke later: pre-install the Gateway API CRDs in a
-# tests/ats conftest, drop `smoke` from skip-steps, and add a chart deploy with
-# tests/test-values.yaml.
+# The smoke (tests/ats/test_smoke.py) is the chart-level install check: the
+# chart installs on a bare cluster and its Deployment becomes ready with the
+# nginx image the branch build pushed (branchPublish in giantswarm/github makes
+# execute-chart-tests wait on that push; the chart resolves the image tag from
+# the stamped appVersion). The HTTPRoute's parent Gateway does not exist on the
+# kind cluster; the route object is accepted by the API server and stays
+# unattached, which is all a kind cluster can prove about it.
 app-tests-app-config-file: tests/test-values.yaml
 app-tests-deploy-namespace: docs-proxy
 
-skip-steps: [smoke,functional,upgrade]
+# functional: no second scenario. upgrade: an upgrade from the last release in
+# the catalog is a follow-up.
+skip-steps: [functional, upgrade]

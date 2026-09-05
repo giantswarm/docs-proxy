@@ -1,4 +1,6 @@
 ---
-# Minimal Helm values for the app-test-suite build-chart step. The cluster
-# smoke is skipped (see .ats/main.yaml), so this only needs to let the chart
-# render and lint -- no per-deployment overrides are required.
+# Helm values for the app-test-suite install of execute-chart-tests
+# (.ats/main.yaml). The chart's defaults install as they are on a kind cluster:
+# two nginx replicas (the anti-affinity is preferred, not required), the
+# HTTPRoute stays unattached, and the pull secret the pod references is only
+# a dangling reference for a public image.
