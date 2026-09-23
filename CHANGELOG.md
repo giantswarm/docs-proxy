@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Trim the whole run of `-`, `.` and `_` from the 63-character cut of the `helm.sh/chart` and `application.giantswarm.io/branch` label values. A long chart version (a branch build's `<version>-dev.<branch>.<date>.<time>.<sha>`, or the `<version>+<digest>` helm-controller installs) could be cut on `.`, `_` or `--.`, and the API server refused the Deployment.
+
 - Use `.Chart.AppVersion` instead of `.Chart.Version` for the `application.giantswarm.io/branch` and `application.giantswarm.io/commit` labels and for the container image tag. When deployed as an OCI chart via Flux, the chart version carries build metadata (e.g. `1.9.7+bf8b0e6012b2`); the `+` produced invalid Kubernetes label values and an unpullable image tag. `.Chart.AppVersion` holds the clean release tag (`replace-app-version-with-git` is enabled), as recommended by the App Build Suite migration guide.
 
 ### Added
