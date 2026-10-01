@@ -29,6 +29,9 @@ spec:
         seccompProfile:
           type: RuntimeDefault
 
+      {{- with include "docs-proxy-app.podScheduling" . }}
+      {{- . | nindent 6 }}
+      {{- end }}
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:

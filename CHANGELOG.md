@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Add `architecture` value (`""` | `amd64` | `arm64`), plus `nodeSelector` and `tolerations` passthrough values. `arm64` renders both the `kubernetes.io/arch` node selector and the toleration for the `kubernetes.io/arch=arm64:NoSchedule` taint that Giant Swarm arm64 node pools carry. Defaults to `""`, which renders nothing, so output is unchanged for existing users. Follows the convention from [hello-world-app#276](https://github.com/giantswarm/hello-world-app/pull/276).
+- Add a `helm-unittest` suite for the `docs-proxy-app.podScheduling` helper. Run it with `make helm-unittest`.
+
 ### Fixed
 
 - Trim the whole run of `-`, `.` and `_` from the 63-character cut of the `helm.sh/chart` and `application.giantswarm.io/branch` label values. A long chart version (a branch build's `<version>-dev.<branch>.<date>.<time>.<sha>`, or the `<version>+<digest>` helm-controller installs) could be cut on `.`, `_` or `--.`, and the API server refused the Deployment.
