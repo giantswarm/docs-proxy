@@ -1,0 +1,3 @@
+# Patterns to ignore when building packages.
+# Chart unit tests are source-only, not part of the packaged chart.
+tests/
