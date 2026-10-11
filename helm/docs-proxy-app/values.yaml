@@ -38,7 +38,7 @@ nodeSelector: {}
 # `architecture: arm64` adds.
 tolerations: []
 
-# @schema type:array;items:{"type":"object"}
+# @schema itemRef: $k8s/_definitions.json#/definitions/io.k8s.api.core.v1.TopologySpreadConstraint
 # -- Topology spread constraints for the pods. An entry without a
 # `labelSelector` gets the workload's own pod selector. The default spreads the
 # replicas over nodes without blocking scheduling on a single-node cluster.
