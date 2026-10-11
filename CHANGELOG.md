@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Add `topologySpreadConstraints` value, defaulting to a spread of the replicas over nodes (`kubernetes.io/hostname`, `maxSkew: 1`, `ScheduleAnyway`) that selects the pod's own labels, so one node disruption no longer takes both replicas down.
 - Add `architecture` value (`""` | `amd64` | `arm64`), plus `nodeSelector` and `tolerations` passthrough values. `arm64` renders both the `kubernetes.io/arch` node selector and the toleration for the `kubernetes.io/arch=arm64:NoSchedule` taint that Giant Swarm arm64 node pools carry. Defaults to `""`, which renders nothing, so output is unchanged for existing users. Follows the convention from [hello-world-app#276](https://github.com/giantswarm/hello-world-app/pull/276).
 - Add a `helm-unittest` suite for the `docs-proxy-app.podScheduling` helper. Run it with `make helm-unittest`.
 
