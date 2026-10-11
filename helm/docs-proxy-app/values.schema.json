@@ -160,6 +160,13 @@
         "subscriptionID": {
             "type": "string"
         },
+        "topologySpreadConstraints": {
+            "type": "array",
+            "description": "Topology spread constraints for the pods. An entry without a `labelSelector` gets the workload's own pod selector. The default spreads the replicas over nodes without blocking scheduling on a single-node cluster. Set `[]` to render none.",
+            "items": {
+                "type": "object"
+            }
+        },
         "tolerations": {
             "type": "array",
             "description": "Tolerations for pod scheduling. Merged with the toleration that `architecture: arm64` adds.",

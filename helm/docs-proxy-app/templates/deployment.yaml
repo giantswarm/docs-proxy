@@ -42,6 +42,17 @@ spec:
               topologyKey: kubernetes.io/hostname
             weight: 100
 
+      {{- with .Values.topologySpreadConstraints }}
+      topologySpreadConstraints:
+        {{- range . }}
+        {{- $constraint := deepCopy . }}
+        {{- if not (hasKey $constraint "labelSelector") }}
+        {{- $_ := set $constraint "labelSelector" (dict "matchLabels" (dict "app" $.Values.name)) }}
+        {{- end }}
+        - {{- toYaml $constraint | nindent 10 }}
+        {{- end }}
+      {{- end }}
+
       containers:
         - name: {{ .Values.image.name }}
           image: "gsoci.azurecr.io/giantswarm/{{ .Values.image.name }}:{{ include "image.tag" . }}"
