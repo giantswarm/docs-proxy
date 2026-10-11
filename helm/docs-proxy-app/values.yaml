@@ -41,9 +41,12 @@ tolerations: []
 # @schema itemRef: $k8s/_definitions.json#/definitions/io.k8s.api.core.v1.TopologySpreadConstraint
 # -- Topology spread constraints for the pods. An entry without a
 # `labelSelector` gets the workload's own pod selector. The default spreads the
-# replicas over nodes without blocking scheduling on a single-node cluster.
+# replicas of one ReplicaSet over nodes, leaving the pods of the previous
+# ReplicaSet out of the count during a rolling update, without blocking scheduling on a single-node cluster.
 # Set `[]` to render none.
 topologySpreadConstraints:
 - maxSkew: 1
   topologyKey: kubernetes.io/hostname
   whenUnsatisfiable: ScheduleAnyway
+  matchLabelKeys:
+  - pod-template-hash
