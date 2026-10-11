@@ -262,11 +262,17 @@
         },
         "topologySpreadConstraints": {
             "type": "array",
-            "description": "Topology spread constraints for the pods. An entry without a `labelSelector` gets the workload's own pod selector. The default spreads the replicas over nodes without blocking scheduling on a single-node cluster. Set `[]` to render none.",
+            "description": "Topology spread constraints for the pods. An entry without a `labelSelector` gets the workload's own pod selector. The default spreads the replicas of one ReplicaSet over nodes, leaving the pods of the previous ReplicaSet out of the count during a rolling update, without blocking scheduling on a single-node cluster. Set `[]` to render none.",
             "items": {
                 "$ref": "#/$defs/_definitions.json/definitions/io.k8s.api.core.v1.TopologySpreadConstraint",
                 "type": "object",
                 "properties": {
+                    "matchLabelKeys": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
                     "maxSkew": {
                         "type": "integer"
                     },
