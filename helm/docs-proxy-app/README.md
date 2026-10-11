@@ -8,19 +8,19 @@ Reverse proxy that brings several documentation components together at https://d
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| name | string | `"docs-proxy-app"` |  |
-| namespace | string | `"docs"` |  |
-| image.name | string | `"docs-proxy"` |  |
-| image.tag | string | `""` |  |
+| architecture | string | `""` | Target CPU architecture for this workload. Empty imposes no constraint. `arm64` pins the pod to arm64 nodes, adding both the `kubernetes.io/arch` node selector and the toleration for the `kubernetes.io/arch=arm64:NoSchedule` taint that Giant Swarm arm64 node pools carry. Both are required, so this single value sets both. Requires a multi-arch container image; an amd64-only image will crash-loop with `exec format error` on an arm64 node. |
 | hostnames[0] | string | `"docs.giantswarm.io"` |  |
 | hostnames[1] | string | `"docs.operations.awsprod.gigantic.io"` |  |
-| resources.requests.cpu | string | `"10m"` |  |
-| resources.requests.memory | string | `"10Mi"` |  |
-| resources.requests.ephemeralStorage | string | `"50Mi"` |  |
-| resources.limits.cpu | string | `"100m"` |  |
-| resources.limits.memory | string | `"50Mi"` |  |
-| resources.limits.ephemeralStorage | string | `"200Mi"` |  |
-| architecture | string | `""` | Target CPU architecture for this workload. Empty imposes no constraint. `arm64` pins the pod to arm64 nodes, adding both the `kubernetes.io/arch` node selector and the toleration for the `kubernetes.io/arch=arm64:NoSchedule` taint that Giant Swarm arm64 node pools carry. Both are required, so this single value sets both. Requires a multi-arch container image; an amd64-only image will crash-loop with `exec format error` on an arm64 node. |
+| image.name | string | `"docs-proxy"` |  |
+| image.tag | string | `""` |  |
+| name | string | `"docs-proxy-app"` |  |
+| namespace | string | `"docs"` |  |
 | nodeSelector | object | `{}` | Node selector for pod scheduling. Merged with `architecture`. Pinning to arm64 here rather than through `architecture` also adds the arm64 taint toleration, so either route is safe. A value that contradicts `architecture` fails the render. |
+| resources.limits.cpu | string | `"100m"` |  |
+| resources.limits.ephemeralStorage | string | `"200Mi"` |  |
+| resources.limits.memory | string | `"50Mi"` |  |
+| resources.requests.cpu | string | `"10m"` |  |
+| resources.requests.ephemeralStorage | string | `"50Mi"` |  |
+| resources.requests.memory | string | `"10Mi"` |  |
 | tolerations | list | `[]` | Tolerations for pod scheduling. Merged with the toleration that `architecture: arm64` adds. |
-| topologySpreadConstraints | list | `[{"maxSkew":1,"topologyKey":"kubernetes.io/hostname","whenUnsatisfiable":"ScheduleAnyway"}]` | Topology spread constraints for the pods. An entry without a `labelSelector` gets the workload's own pod selector. The default spreads the replicas over nodes without blocking scheduling on a single-node cluster. Set `[]` to render none. |
+| topologySpreadConstraints | list | `[{"matchLabelKeys":["pod-template-hash"],"maxSkew":1,"topologyKey":"kubernetes.io/hostname","whenUnsatisfiable":"ScheduleAnyway"}]` | Topology spread constraints for the pods. An entry without a `labelSelector` gets the workload's own pod selector. The default spreads the replicas of one ReplicaSet over nodes, leaving the pods of the previous ReplicaSet out of the count during a rolling update, without blocking scheduling on a single-node cluster. Set `[]` to render none. |
