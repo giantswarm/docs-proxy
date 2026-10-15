@@ -201,7 +201,9 @@ tests:
             value: arm64
             effect: NoSchedule
 
-  - it: spreads the replicas over nodes by default, selecting the pod's own labels
+  - it: spreads the current ReplicaSet's replicas over nodes by default, selecting the pod's own labels
+    # matchLabelKeys keeps the previous ReplicaSet's pods out of the skew count
+    # during a rolling update.
     asserts:
       - equal:
           path: spec.template.spec.topologySpreadConstraints
@@ -209,6 +211,8 @@ tests:
             - maxSkew: 1
               topologyKey: kubernetes.io/hostname
               whenUnsatisfiable: ScheduleAnyway
+              matchLabelKeys:
+                - pod-template-hash
               labelSelector:
                 matchLabels:
                   app: docs-proxy-app
