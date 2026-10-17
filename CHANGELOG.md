@@ -7,18 +7,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Added
-
-- Add `topologySpreadConstraints` value, defaulting to a spread of the replicas over nodes (`kubernetes.io/hostname`, `maxSkew: 1`, `ScheduleAnyway`) that selects the pod's own labels, so one node disruption no longer takes both replicas down.
-- Add `architecture` value (`""` | `amd64` | `arm64`), plus `nodeSelector` and `tolerations` passthrough values. `arm64` renders both the `kubernetes.io/arch` node selector and the toleration for the `kubernetes.io/arch=arm64:NoSchedule` taint that Giant Swarm arm64 node pools carry. Defaults to `""`, which renders nothing, so output is unchanged for existing users. Follows the convention from [hello-world-app#276](https://github.com/giantswarm/hello-world-app/pull/276).
-- Add a `helm-unittest` suite for the `docs-proxy-app.podScheduling` helper. Run it with `make helm-unittest`.
+## [1.13.1] - 2026-10-11
 
 ### Fixed
 
 - Add `matchLabelKeys: [pod-template-hash]` to the default `topologySpreadConstraints`, so the pods of the previous ReplicaSet no longer count during a rolling update and both new replicas can no longer land on one node.
+
+## [1.13.0] - 2026-10-11
+
+### Added
+
+- Add `topologySpreadConstraints` value, defaulting to a spread of the replicas over nodes (`kubernetes.io/hostname`, `maxSkew: 1`, `ScheduleAnyway`) that selects the pod's own labels, so one node disruption no longer takes both replicas down.
+
+## [1.12.0] - 2026-10-01
+
+### Added
+
+- Add `architecture` value (`""` | `amd64` | `arm64`), plus `nodeSelector` and `tolerations` passthrough values. `arm64` renders both the `kubernetes.io/arch` node selector and the toleration for the `kubernetes.io/arch=arm64:NoSchedule` taint that Giant Swarm arm64 node pools carry. Defaults to `""`, which renders nothing, so output is unchanged for existing users. Follows the convention from [hello-world-app#276](https://github.com/giantswarm/hello-world-app/pull/276).
+- Add a `helm-unittest` suite for the `docs-proxy-app.podScheduling` helper. Run it with `make helm-unittest`.
+
+## [1.11.14] - 2026-09-23
+
+### Fixed
+
 - Trim the whole run of `-`, `.` and `_` from the 63-character cut of the `helm.sh/chart` and `application.giantswarm.io/branch` label values. A long chart version (a branch build's `<version>-dev.<branch>.<date>.<time>.<sha>`, or the `<version>+<digest>` helm-controller installs) could be cut on `.`, `_` or `--.`, and the API server refused the Deployment.
 
-- Use `.Chart.AppVersion` instead of `.Chart.Version` for the `application.giantswarm.io/branch` and `application.giantswarm.io/commit` labels and for the container image tag. When deployed as an OCI chart via Flux, the chart version carries build metadata (e.g. `1.9.7+bf8b0e6012b2`); the `+` produced invalid Kubernetes label values and an unpullable image tag. `.Chart.AppVersion` holds the clean release tag (`replace-app-version-with-git` is enabled), as recommended by the App Build Suite migration guide.
+## [1.11.0] - 2026-07-07
 
 ### Added
 
@@ -28,9 +42,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Use binary suffix (`Mi`) for memory resource values.
 
+## [1.10.0] - 2026-07-07
+
 ### Removed
 
 - Remove the nginx `Ingress` template (and its `ingress` values/schema). Routing is handled by the Gateway API `HTTPRoute`; our clusters no longer run an nginx ingress controller (only the `alb` IngressClass exists), so the chart's hardcoded `ingressClassName: nginx` was rejected by the AWS Load Balancer Controller admission webhook (`IngressClass "nginx" not found`), which blocked HelmRelease installs.
+
+## [1.9.8] - 2026-07-07
+
+### Fixed
+
+- Use `.Chart.AppVersion` instead of `.Chart.Version` for the `application.giantswarm.io/branch` and `application.giantswarm.io/commit` labels and for the container image tag. When deployed as an OCI chart via Flux, the chart version carries build metadata (e.g. `1.9.7+bf8b0e6012b2`); the `+` produced invalid Kubernetes label values and an unpullable image tag. `.Chart.AppVersion` holds the clean release tag (`replace-app-version-with-git` is enabled), as recommended by the App Build Suite migration guide.
 
 ## [1.9.1] - 2026-05-18
 
@@ -201,7 +223,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Updated README information
 
-[Unreleased]: https://github.com/giantswarm/docs-proxy/compare/v1.9.1...HEAD
+[Unreleased]: https://github.com/giantswarm/docs-proxy/compare/v1.13.1...HEAD
+[1.13.1]: https://github.com/giantswarm/docs-proxy/compare/v1.13.0...v1.13.1
+[1.13.0]: https://github.com/giantswarm/docs-proxy/compare/v1.12.0...v1.13.0
+[1.12.0]: https://github.com/giantswarm/docs-proxy/compare/v1.11.14...v1.12.0
+[1.11.14]: https://github.com/giantswarm/docs-proxy/compare/v1.11.0...v1.11.14
+[1.11.0]: https://github.com/giantswarm/docs-proxy/compare/v1.10.0...v1.11.0
+[1.10.0]: https://github.com/giantswarm/docs-proxy/compare/v1.9.8...v1.10.0
+[1.9.8]: https://github.com/giantswarm/docs-proxy/compare/v1.9.1...v1.9.8
 [1.9.1]: https://github.com/giantswarm/docs-proxy/compare/v1.9.0...v1.9.1
 [1.9.0]: https://github.com/giantswarm/docs-proxy/compare/v1.8.0...v1.9.0
 [1.8.0]: https://github.com/giantswarm/docs-proxy/compare/v1.7.0...v1.8.0
