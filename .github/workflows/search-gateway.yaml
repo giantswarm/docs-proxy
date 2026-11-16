@@ -1,0 +1,42 @@
+# Runs the /searchapi search gateway integration test (tests/search) against a
+# real OpenSearch with an intranet fixture. sitesearch has no authentication,
+# so this test is what guards that no request reaches the intranet index.
+name: search-gateway
+
+on:
+  pull_request:
+    paths:
+      - nginx.conf
+      - search.js
+      - Dockerfile
+      - tests/search/**
+      - .github/workflows/search-gateway.yaml
+  push:
+    branches:
+      - main
+    paths:
+      - nginx.conf
+      - search.js
+      - Dockerfile
+      - tests/search/**
+      - .github/workflows/search-gateway.yaml
+  merge_group: {}
+
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Run the gateway integration test
+        run: tests/search/run.sh
