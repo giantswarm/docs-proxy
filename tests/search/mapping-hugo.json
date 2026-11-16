@@ -1,0 +1,74 @@
+{
+  "properties": {
+    "title": {
+      "type": "text",
+      "store": true,
+      "term_vector": "with_positions_offsets",
+      "analyzer": "english"
+    },
+    "type": {
+      "type": "keyword",
+      "store": true
+    },
+    "url": {
+      "type": "keyword",
+      "store": true
+    },
+    "uri": {
+      "type": "keyword",
+      "store": true
+    },
+    "breadcrumb": {
+      "type": "keyword",
+      "store": true
+    },
+    "breadcrumb_1": {
+      "type": "keyword",
+      "store": true
+    },
+    "breadcrumb_2": {
+      "type": "keyword",
+      "store": true
+    },
+    "breadcrumb_3": {
+      "type": "keyword",
+      "store": true
+    },
+    "breadcrumb_4": {
+      "type": "keyword",
+      "store": true
+    },
+    "breadcrumb_5": {
+      "type": "keyword",
+      "store": true
+    },
+    "body": {
+      "type": "text",
+      "store": true,
+      "term_vector": "with_positions_offsets",
+      "analyzer": "english"
+    },
+    "date": {
+      "type": "date"
+    },
+    "text": {
+      "type": "text",
+      "store": true,
+      "fields": {
+        "english": {
+          "type": "text",
+          "term_vector": "with_positions_offsets",
+          "analyzer": "english"
+        },
+        "trigram": {
+          "type": "text",
+          "analyzer": "trigram"
+        },
+        "reverse": {
+          "type": "text",
+          "analyzer": "reverse"
+        }
+      }
+    }
+  }
+}

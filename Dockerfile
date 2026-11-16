@@ -6,6 +6,7 @@ USER 0
 RUN rm -r /etc/nginx/conf.d
 
 ADD ./nginx.conf /etc/nginx/
+ADD ./search.js /etc/nginx/
 ADD ./content /www
 
 USER 101

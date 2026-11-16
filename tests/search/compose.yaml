@@ -1,0 +1,28 @@
+# Integration test for the /searchapi search gateway (search.js).
+# Runs the docs-proxy image against a real OpenSearch with fixture indices,
+# including a confidential intranet index the gateway must never expose.
+# Run with tests/search/run.sh.
+services:
+  sitesearch-app:
+    image: gsoci.azurecr.io/giantswarm/opensearch:3.8.0
+    environment:
+      discovery.type: single-node
+      DISABLE_SECURITY_PLUGIN: "true"
+      DISABLE_INSTALL_DEMO_CONFIG: "true"
+      OPENSEARCH_JAVA_OPTS: -Xms512m -Xmx512m
+    ports:
+      - "127.0.0.1:19200:9200"
+  docs-app:
+    image: gsoci.azurecr.io/giantswarm/nginx-unprivileged:1.31-alpine
+    volumes:
+      - ./docs-app.conf:/etc/nginx/nginx.conf:ro
+  coredns.kube-system.svc.cluster.local:
+    image: gsoci.azurecr.io/giantswarm/nginx-unprivileged:1.31-alpine
+  docs-proxy:
+    build: ../..
+    depends_on:
+      - sitesearch-app
+      - docs-app
+      - coredns.kube-system.svc.cluster.local
+    ports:
+      - "127.0.0.1:18000:8000"
