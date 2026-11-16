@@ -184,12 +184,22 @@ class Gateway(unittest.TestCase):
                 self.assertEqual(status, want, text)
                 self.assertNotIn(SECRET, text)
 
+    def test_upstream_cannot_redirect_into_opensearch(self):
+        # docs-app answers /accel with X-Accel-Redirect into /_sitesearch.
+        for method, body in [("GET", None), ("POST", b"x=1")]:
+            with self.subTest(method):
+                status, text = request(method, PROXY + "/accel", body=body,
+                                       headers={"Content-Type": "application/x-www-form-urlencoded"})
+                self.assertEqual(text.strip(), "docs-app", f"{status} {text}")
+                self.assertNotIn(SECRET, text)
+
     def test_other_opensearch_apis_are_not_reachable(self):
         for path in ["/searchapi/health", "/searchapi_shards", "/searchapi/template", "/searchapi/_count",
                      "/_sitesearch", "/_sitesearch?q=" + SECRET]:
             with self.subTest(path):
                 status, text = request("GET", PROXY + path)
-                self.assertNotEqual(status, 200, text)
+                # Anything but the gateway falls through to docs-app.
+                self.assertTrue(status != 200 or text.strip() == "docs-app", f"{status} {text}")
                 self.assertNotIn(SECRET, text)
                 self.assertNotIn("cluster_name", text)
 

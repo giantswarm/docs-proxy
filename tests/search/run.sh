@@ -5,5 +5,5 @@ set -eu
 cd "$(dirname "$0")"
 compose="docker compose -p docs-proxy-search-test -f compose.yaml"
 trap '$compose down -v >/dev/null 2>&1' EXIT
-$compose up -d --build --wait-timeout 300
+$compose up -d --build
 python3 -I test_gateway.py
