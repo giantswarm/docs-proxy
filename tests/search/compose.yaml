@@ -4,7 +4,7 @@
 # Run with tests/search/run.sh.
 services:
   sitesearch-app:
-    image: gsoci.azurecr.io/giantswarm/opensearch:3.8.0
+    image: gsoci.azurecr.io/giantswarm/opensearch:3.9.0
     environment:
       discovery.type: single-node
       DISABLE_SECURITY_PLUGIN: "true"
