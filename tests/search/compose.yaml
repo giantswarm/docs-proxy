@@ -2,6 +2,20 @@
 # Runs the docs-proxy image against a real OpenSearch with fixture indices,
 # including a confidential intranet index the gateway must never expose.
 # Run with tests/search/run.sh.
+# The network sits inside the address range nginx.conf trusts for
+# X-Forwarded-For (the pod range the Envoy gateway runs in), so the test
+# client can stand in for Envoy and set the client address per request.
+networks:
+  default:
+    ipam:
+      config:
+        - subnet: 100.64.251.0/24
+  # Outside the trusted range: X-Forwarded-For from here must be ignored.
+  untrusted:
+    ipam:
+      config:
+        - subnet: 172.30.251.0/24
+
 services:
   sitesearch-app:
     image: gsoci.azurecr.io/giantswarm/opensearch:3.9.0
@@ -10,8 +24,6 @@ services:
       DISABLE_SECURITY_PLUGIN: "true"
       DISABLE_INSTALL_DEMO_CONFIG: "true"
       OPENSEARCH_JAVA_OPTS: -Xms512m -Xmx512m
-    ports:
-      - "127.0.0.1:19200:9200"
   docs-app:
     image: gsoci.azurecr.io/giantswarm/nginx-unprivileged:1.31-alpine
     volumes:
@@ -20,9 +32,27 @@ services:
     image: gsoci.azurecr.io/giantswarm/nginx-unprivileged:1.31-alpine
   docs-proxy:
     build: ../..
+    networks:
+      default: {}
+      untrusted:
+        aliases:
+          - docs-proxy-untrusted
     depends_on:
       - sitesearch-app
       - docs-app
       - coredns.kube-system.svc.cluster.local
-    ports:
-      - "127.0.0.1:18000:8000"
+  tests:
+    image: python:3.13-alpine
+    networks:
+      - default
+      - untrusted
+    depends_on:
+      - docs-proxy
+    working_dir: /tests
+    environment:
+      OPENSEARCH_URL: http://sitesearch-app:9200
+      PROXY_URL: http://docs-proxy:8000
+      UNTRUSTED_PROXY_URL: http://docs-proxy-untrusted:8000
+    volumes:
+      - .:/tests:ro
+    command: ["python3", "-I", "-B", "test_gateway.py"]
