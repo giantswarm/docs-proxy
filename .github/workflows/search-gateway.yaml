@@ -9,6 +9,7 @@ on:
       - nginx.conf
       - search.js
       - Dockerfile
+      - content/**
       - tests/search/**
       - .github/workflows/search-gateway.yaml
   push:
@@ -18,6 +19,7 @@ on:
       - nginx.conf
       - search.js
       - Dockerfile
+      - content/**
       - tests/search/**
       - .github/workflows/search-gateway.yaml
   merge_group: {}

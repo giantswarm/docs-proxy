@@ -7,6 +7,7 @@ request shape reaches the intranet index or another OpenSearch API.
 Uses only the standard library. Run through tests/search/run.sh.
 """
 
+import itertools
 import json
 import os
 import sys
@@ -17,8 +18,17 @@ import urllib.parse
 import urllib.request
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-OPENSEARCH = os.environ.get("OPENSEARCH_URL", "http://127.0.0.1:19200")
-PROXY = os.environ.get("PROXY_URL", "http://127.0.0.1:18000")
+OPENSEARCH = os.environ.get("OPENSEARCH_URL", "http://sitesearch-app:9200")
+PROXY = os.environ.get("PROXY_URL", "http://docs-proxy:8000")
+
+# Every request to the proxy comes from its own client address, as Envoy
+# would forward it, so only the rate limit test hits the per-client limit.
+_client = itertools.count(1)
+
+
+def client_address():
+    n = next(_client)
+    return f"198.51.{n // 250}.{n % 250 + 1}"
 SECRET = "zebracorn"
 
 SETTINGS = {
@@ -36,8 +46,11 @@ def request(method, url, body=None, headers=None):
     data = None
     if body is not None:
         data = body if isinstance(body, bytes) else json.dumps(body).encode()
-    req = urllib.request.Request(url, data=data, method=method, headers=headers or {})
-    if data is not None and "Content-Type" not in (headers or {}):
+    headers = dict(headers or {})
+    if url.startswith(PROXY) and "X-Forwarded-For" not in headers:
+        headers["X-Forwarded-For"] = client_address()
+    req = urllib.request.Request(url, data=data, method=method, headers=headers)
+    if data is not None and "Content-Type" not in headers:
         req.add_header("Content-Type", "application/json")
     try:
         with urllib.request.urlopen(req, timeout=30) as resp:
@@ -183,6 +196,17 @@ class Gateway(unittest.TestCase):
                 status, text = search(**kwargs)
                 self.assertEqual(status, want, text)
                 self.assertNotIn(SECRET, text)
+
+    def test_rate_limit_per_client(self):
+        # 10 requests per second with a burst of 20, per client address. The
+        # address is the last X-Forwarded-For entry; earlier ones are the
+        # client's own and don't open a new bucket.
+        statuses = [search("q=node+pools", headers={"X-Forwarded-For": f"203.0.113.{i}, 192.0.2.7"})[0]
+                    for i in range(40)]
+        self.assertIn(429, statuses)
+        self.assertEqual(set(statuses), {200, 429}, statuses)
+        self.assertEqual(search("q=node+pools", headers={"X-Forwarded-For": "192.0.2.8"})[0], 200,
+                         "another client is not limited")
 
     def test_upstream_cannot_redirect_into_opensearch(self):
         # docs-app answers /accel with X-Accel-Redirect into /_sitesearch.
