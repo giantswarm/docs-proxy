@@ -50,3 +50,16 @@ topologySpreadConstraints:
   whenUnsatisfiable: ScheduleAnyway
   matchLabelKeys:
   - pod-template-hash
+
+networkPolicy:
+  # -- Render a CiliumNetworkPolicy that lets only the Envoy gateway's proxy
+  # pods reach docs-proxy on port 8000. nginx takes the client address for
+  # the /searchapi rate limit from X-Forwarded-For when the peer is in the
+  # pod range, so any other pod could otherwise choose its own address.
+  # Skipped on clusters without the Cilium API.
+  enabled: true
+  gateway:
+    # -- Namespace of the Envoy gateway's proxy pods.
+    namespace: envoy-gateway-system
+    # -- Name of the Gateway whose proxy pods route to docs-proxy.
+    name: giantswarm-default

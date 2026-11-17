@@ -220,6 +220,30 @@
         "namespace": {
             "type": "string"
         },
+        "networkPolicy": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "description": "Render a CiliumNetworkPolicy that lets only the Envoy gateway's proxy pods reach docs-proxy on port 8000. nginx takes the client address for the /searchapi rate limit from X-Forwarded-For when the peer is in the pod range, so any other pod could otherwise choose its own address. Skipped on clusters without the Cilium API."
+                },
+                "gateway": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "name": {
+                            "type": "string",
+                            "description": "Name of the Gateway whose proxy pods route to docs-proxy."
+                        },
+                        "namespace": {
+                            "type": "string",
+                            "description": "Namespace of the Envoy gateway's proxy pods."
+                        }
+                    }
+                }
+            }
+        },
         "nodeSelector": {
             "type": "object",
             "description": "Node selector for pod scheduling. Merged with `architecture`. Pinning to arm64 here rather than through `architecture` also adds the arm64 taint toleration, so either route is safe. A value that contradicts `architecture` fails the render.",
