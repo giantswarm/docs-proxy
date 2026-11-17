@@ -42,7 +42,7 @@ services:
       - docs-app
       - coredns.kube-system.svc.cluster.local
   tests:
-    image: python:3.13-alpine
+    image: python:3.15-alpine
     networks:
       - default
       - untrusted
