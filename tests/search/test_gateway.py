@@ -7,6 +7,7 @@ request shape reaches the intranet index or another OpenSearch API.
 Uses only the standard library. Run through tests/search/run.sh.
 """
 
+import concurrent.futures
 import itertools
 import json
 import os
@@ -20,6 +21,7 @@ import urllib.request
 HERE = os.path.dirname(os.path.abspath(__file__))
 OPENSEARCH = os.environ.get("OPENSEARCH_URL", "http://sitesearch-app:9200")
 PROXY = os.environ.get("PROXY_URL", "http://docs-proxy:8000")
+UNTRUSTED_PROXY = os.environ.get("UNTRUSTED_PROXY_URL", "http://docs-proxy-untrusted:8000")
 
 # Every request to the proxy comes from its own client address, as Envoy
 # would forward it, so only the rate limit test hits the per-client limit.
@@ -197,16 +199,29 @@ class Gateway(unittest.TestCase):
                 self.assertEqual(status, want, text)
                 self.assertNotIn(SECRET, text)
 
+    def burst(self, url, forwarded_for, count=60):
+        # Sent concurrently, so a slow runner still exceeds the burst.
+        def one(i):
+            return request("GET", url + "/searchapi/?q=node+pools",
+                           headers={"X-Forwarded-For": forwarded_for(i)})[0]
+        with concurrent.futures.ThreadPoolExecutor(max_workers=20) as pool:
+            return list(pool.map(one, range(count)))
+
     def test_rate_limit_per_client(self):
-        # 10 requests per second with a burst of 20, per client address. The
-        # address is the last X-Forwarded-For entry; earlier ones are the
-        # client's own and don't open a new bucket.
-        statuses = [search("q=node+pools", headers={"X-Forwarded-For": f"203.0.113.{i}, 192.0.2.7"})[0]
-                    for i in range(40)]
+        # 5 requests per second with a burst of 10, per client address and
+        # replica. The address is the last X-Forwarded-For entry; earlier
+        # ones are the client's own and don't open a new bucket.
+        statuses = self.burst(PROXY, lambda i: f"203.0.113.{i}, 192.0.2.7")
         self.assertIn(429, statuses)
         self.assertEqual(set(statuses), {200, 429}, statuses)
         self.assertEqual(search("q=node+pools", headers={"X-Forwarded-For": "192.0.2.8"})[0], 200,
                          "another client is not limited")
+
+    def test_untrusted_peer_cannot_choose_its_address(self):
+        # From outside the Envoy pod range, X-Forwarded-For is ignored: a
+        # new address per request still counts against the peer's own.
+        statuses = self.burst(UNTRUSTED_PROXY, lambda i: f"198.18.0.{i}")
+        self.assertIn(429, statuses)
 
     def test_upstream_cannot_redirect_into_opensearch(self):
         # docs-app answers /accel with X-Accel-Redirect into /_sitesearch.

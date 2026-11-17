@@ -10,6 +10,11 @@ networks:
     ipam:
       config:
         - subnet: 100.64.251.0/24
+  # Outside the trusted range: X-Forwarded-For from here must be ignored.
+  untrusted:
+    ipam:
+      config:
+        - subnet: 172.30.251.0/24
 
 services:
   sitesearch-app:
@@ -27,18 +32,27 @@ services:
     image: gsoci.azurecr.io/giantswarm/nginx-unprivileged:1.31-alpine
   docs-proxy:
     build: ../..
+    networks:
+      default: {}
+      untrusted:
+        aliases:
+          - docs-proxy-untrusted
     depends_on:
       - sitesearch-app
       - docs-app
       - coredns.kube-system.svc.cluster.local
   tests:
     image: python:3.13-alpine
+    networks:
+      - default
+      - untrusted
     depends_on:
       - docs-proxy
     working_dir: /tests
     environment:
       OPENSEARCH_URL: http://sitesearch-app:9200
       PROXY_URL: http://docs-proxy:8000
+      UNTRUSTED_PROXY_URL: http://docs-proxy-untrusted:8000
     volumes:
       - .:/tests:ro
     command: ["python3", "-I", "-B", "test_gateway.py"]

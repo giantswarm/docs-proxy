@@ -272,9 +272,17 @@ async function handle(r) {
         return fail(r, 502, 'search is unavailable');
     }
 
+    let body;
+    try {
+        body = JSON.stringify(shape(raw));
+    } catch (e) {
+        r.warn('unexpected search upstream response: ' + e);
+        return fail(r, 502, 'search is unavailable');
+    }
+
     r.headersOut['Content-Type'] = 'application/json';
     r.headersOut['Cache-Control'] = 'no-store';
-    r.return(200, JSON.stringify(shape(raw)));
+    r.return(200, body);
 }
 
 export default { handle, parse, buildQuery, shape };
