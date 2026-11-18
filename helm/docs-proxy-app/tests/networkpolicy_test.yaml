@@ -1,0 +1,60 @@
+# The Envoy gateway is the only client docs-proxy needs. Any other pod in the
+# pod range could set X-Forwarded-For and choose its own rate limit bucket.
+suite: network policy
+templates:
+  - templates/networkpolicy.yaml
+tests:
+  - it: lets only the gateway's Envoy pods in on 8000
+    capabilities: &cilium
+      apiVersions:
+        - cilium.io/v2/CiliumNetworkPolicy
+    asserts:
+      - isKind:
+          of: CiliumNetworkPolicy
+      - equal:
+          path: spec.endpointSelector.matchLabels
+          value:
+            app: docs-proxy-app
+      - equal:
+          path: spec.ingress
+          value:
+            - fromEndpoints:
+                - matchLabels:
+                    io.kubernetes.pod.namespace: envoy-gateway-system
+                    app.kubernetes.io/name: envoy
+                    app.kubernetes.io/component: proxy
+                    gateway.envoyproxy.io/owning-gateway-name: giantswarm-default
+              toPorts:
+                - ports:
+                    - port: "8000"
+                      protocol: TCP
+
+  - it: follows a different gateway
+    capabilities: *cilium
+    set:
+      networkPolicy:
+        gateway:
+          namespace: other-gateways
+          name: internal
+    asserts:
+      - equal:
+          path: spec.ingress[0].fromEndpoints[0].matchLabels
+          value:
+            io.kubernetes.pod.namespace: other-gateways
+            app.kubernetes.io/name: envoy
+            app.kubernetes.io/component: proxy
+            gateway.envoyproxy.io/owning-gateway-name: internal
+
+  - it: renders nothing when disabled
+    capabilities: *cilium
+    set:
+      networkPolicy:
+        enabled: false
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: renders nothing on a cluster without the Cilium API
+    asserts:
+      - hasDocuments:
+          count: 0

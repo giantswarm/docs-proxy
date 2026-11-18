@@ -1,0 +1,33 @@
+{{- $np := .Values.networkPolicy | default dict }}
+{{- if and $np.enabled (.Capabilities.APIVersions.Has "cilium.io/v2/CiliumNetworkPolicy") }}
+{{- $gw := $np.gateway | default dict }}
+# Only the Envoy gateway's proxy pods may reach docs-proxy. nginx trusts
+# X-Forwarded-For from the pod range for the /searchapi rate limit, so any
+# other pod could otherwise choose its own client address. Egress is left
+# alone. Cilium still lets the kubelet's probes in from the host. The selector
+# relies on Envoy Gateway labelling its proxy pods with owning-gateway-name,
+# which it stops doing if the GatewayClass turns on mergeGateways: update this
+# then.
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  namespace: {{ .Release.Namespace }}
+  name: {{ .Values.name }}
+  labels:
+    {{- include "labels.common" . | nindent 4 }}
+spec:
+  endpointSelector:
+    matchLabels:
+      app: {{ .Values.name | quote }}
+  ingress:
+    - fromEndpoints:
+        - matchLabels:
+            io.kubernetes.pod.namespace: {{ required "networkPolicy.gateway.namespace is required" $gw.namespace | quote }}
+            app.kubernetes.io/name: envoy
+            app.kubernetes.io/component: proxy
+            gateway.envoyproxy.io/owning-gateway-name: {{ required "networkPolicy.gateway.name is required" $gw.name | quote }}
+      toPorts:
+        - ports:
+            - port: "8000"
+              protocol: TCP
+{{- end }}
