@@ -33,6 +33,9 @@ def client_address():
     return f"198.51.{n // 250}.{n % 250 + 1}"
 SECRET = "zebracorn"
 
+# The gateway wraps highlighted matches in these private-use characters.
+HIGHLIGHT_PRE = chr(0xE000)
+
 SETTINGS = {
     "analysis": {
         "analyzer": {
@@ -160,7 +163,7 @@ class Gateway(unittest.TestCase):
 
     def test_highlight_is_returned(self):
         hit = ok("q=autoscaler")["hits"]["hits"][0]
-        self.assertTrue(any("**" in s for s in hit["highlight"].get("body", []) + hit["highlight"].get("title", [])))
+        self.assertTrue(any(HIGHLIGHT_PRE in s for s in hit["highlight"].get("body", []) + hit["highlight"].get("title", [])))
 
     def test_query_syntax_stays_inside_the_query_string(self):
         # Operators the gateway allows are fine; JSON in q is just text.

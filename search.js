@@ -16,6 +16,12 @@ const MAX_FROM = 1000;
 const MAX_SIZE = 50;
 const DEFAULT_SIZE = 10;
 
+// Highlight markers. These are private-use characters (U+E000 and U+E001)
+// that cannot occur in indexed content, so they never collide with Markdown
+// bold. String.fromCharCode keeps the source plain ASCII.
+const HIGHLIGHT_PRE = String.fromCharCode(0xe000);
+const HIGHLIGHT_POST = String.fromCharCode(0xe001);
+
 // The public indices hold only these types. Intranet documents live in their
 // own index, which the upstream location never targets.
 const TYPES = ['Documentation', 'Handbook', 'Blog'];
@@ -148,7 +154,7 @@ function parse(r) {
 // Builds the OpenSearch query. Caller input only ever lands in string values,
 // never in keys or structure.
 function buildQuery(p) {
-    const fields = ['title^5', 'body', 'text'];
+    const fields = ['title^5', 'title.prefix^2', 'body', 'body.prefix', 'text'];
     const inner = p.matchAll
         ? {
             simple_query_string: {
@@ -200,8 +206,8 @@ function buildQuery(p) {
         _source: { includes: ['title', 'description', 'url', 'type', 'breadcrumb'] },
         query: filters.length > 0 ? { bool: { must: [scored], filter: filters } } : scored,
         highlight: {
-            pre_tags: ['**'],
-            post_tags: ['**'],
+            pre_tags: [HIGHLIGHT_PRE],
+            post_tags: [HIGHLIGHT_POST],
             fields: {
                 body: { type: 'unified', number_of_fragments: 1, no_match_size: 200, fragment_size: 150 },
                 title: { type: 'unified', number_of_fragments: 1 },
