@@ -13,4 +13,4 @@ The main purpose is to
 
 Please refer to the [giantswarm/docs](https://github.com/giantswarm/docs) repository for more context and explanation on how to run this locally with other related components.
 
-The app is deployed as a Giant Swarm [App](https://docs.giantswarm.io/app-platform/). See the `helm` folder for details.
+The app is deployed as a Giant Swarm [App](https://docs.giantswarm.io/overview/fleet-management/app-management/). See the `helm` folder for details.
