@@ -35,14 +35,24 @@ SECRET = "zebracorn"
 
 # The gateway wraps highlighted matches in these private-use characters.
 HIGHLIGHT_PRE = chr(0xE000)
+HIGHLIGHT_POST = chr(0xE001)
 
+# Mirrors the analysis the indexer configures, so a search here behaves as it
+# does in production. The 'edge_ngram_index' analyzer and the 'prefix' field in
+# mapping-hugo.json and mapping-blog.json carry partial-word matching; see
+# common.py and mappings/ in docs-indexer.
 SETTINGS = {
     "analysis": {
         "analyzer": {
             "trigram": {"type": "custom", "tokenizer": "standard", "filter": ["lowercase", "shingle"]},
             "reverse": {"type": "custom", "tokenizer": "standard", "filter": ["lowercase", "reverse"]},
+            "edge_ngram_index": {"type": "custom", "tokenizer": "standard",
+                                 "filter": ["lowercase", "edge_ngram_3_15"]},
         },
-        "filter": {"shingle": {"type": "shingle", "min_shingle_size": 2, "max_shingle_size": 3}},
+        "filter": {
+            "shingle": {"type": "shingle", "min_shingle_size": 2, "max_shingle_size": 3},
+            "edge_ngram_3_15": {"type": "edge_ngram", "min_gram": 3, "max_gram": 15, "preserve_original": True},
+        },
     }
 }
 
@@ -99,6 +109,8 @@ def seed():
                           "https://docs.giantswarm.io/tutorials/node-pools/", ["tutorials", "node-pools"])),
         ("docs", "2", doc("Cluster autoscaler", "The cluster autoscaler scales node pools up and down.", "Documentation",
                           "https://docs.giantswarm.io/reference/autoscaler/", ["reference"])),
+        ("docs", "3", doc("Markdown bold", "Write **bold** text with two asterisks.", "Documentation",
+                          "https://docs.giantswarm.io/reference/markdown/", ["reference", "markdown"])),
         ("handbook", "1", doc("Node pool etiquette", "Handbook page about node pools.", "Handbook",
                               "https://handbook.giantswarm.io/docs/node-pools/", ["docs"])),
         ("blog", "1", doc("Node pools are here", "Blog post announcing node pools.", "Blog",
@@ -164,6 +176,26 @@ class Gateway(unittest.TestCase):
     def test_highlight_is_returned(self):
         hit = ok("q=autoscaler")["hits"]["hits"][0]
         self.assertTrue(any(HIGHLIGHT_PRE in s for s in hit["highlight"].get("body", []) + hit["highlight"].get("title", [])))
+
+    def test_highlight_markers_do_not_collide_with_markdown_bold(self):
+        # The markers were ** until the private-use characters replaced them,
+        # which the indexed text also uses for bold. Only the match itself is
+        # wrapped now, and the asterisks around it stay as text.
+        hit = ok("q=bold")["hits"]["hits"][0]
+        self.assertEqual(hit["_source"]["title"], "Markdown bold")
+        body = hit["highlight"]["body"][0]
+        self.assertIn(HIGHLIGHT_PRE + "bold" + HIGHLIGHT_POST, body)
+        self.assertIn("**" + HIGHLIGHT_PRE, body)
+        self.assertIn(HIGHLIGHT_POST + "**", body)
+
+    def test_partial_word_matches_a_stored_prefix(self):
+        # Searching while the last word is still being typed. "autosca" is not
+        # what the english analyzer stems "autoscaler" to, so only the 'prefix'
+        # sub-fields can match it. A fragment below the analyzer's min_gram of
+        # 3 matches nothing.
+        titles = [h["_source"]["title"] for h in ok("q=autosca")["hits"]["hits"]]
+        self.assertIn("Cluster autoscaler", titles)
+        self.assertEqual(ok("q=au")["hits"]["total"]["value"], 0)
 
     def test_query_syntax_stays_inside_the_query_string(self):
         # Operators the gateway allows are fine; JSON in q is just text.
