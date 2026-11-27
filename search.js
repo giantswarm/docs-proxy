@@ -154,7 +154,11 @@ function parse(r) {
 // Builds the OpenSearch query. Caller input only ever lands in string values,
 // never in keys or structure.
 function buildQuery(p) {
-    const fields = ['title^5', 'title.prefix^2', 'body', 'body.prefix', 'text'];
+    // description and user_questions are hand-written front matter that say
+    // what a page answers, often in the words people search with, so they
+    // weigh more than the body. user_questions are shaped like queries and
+    // weigh more than the description. Both stay below the title.
+    const fields = ['title^5', 'title.prefix^2', 'user_questions^3', 'description^2', 'body', 'body.prefix', 'text'];
     const inner = p.matchAll
         ? {
             simple_query_string: {
