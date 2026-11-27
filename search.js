@@ -154,7 +154,14 @@ function parse(r) {
 // Builds the OpenSearch query. Caller input only ever lands in string values,
 // never in keys or structure.
 function buildQuery(p) {
-    const fields = ['title^5', 'title.prefix^2', 'body', 'body.prefix', 'text'];
+    // description and user_questions are hand-written front matter that say
+    // what a page answers, often in the words people search with, so they
+    // weigh more than the body. user_questions are shaped like queries and
+    // weigh more than the description. Both stay below the title.
+    const fields = ['title^5', 'title.prefix^2', 'user_questions^3', 'description^2', 'body', 'body.prefix', 'text'];
+    // An index built without an explicit mapping for a front matter field
+    // maps it dynamically, as a date or number if the first value looks like
+    // one. lenient skips such a field instead of failing the whole index.
     const inner = p.matchAll
         ? {
             simple_query_string: {
@@ -162,6 +169,7 @@ function buildQuery(p) {
                 fields: fields,
                 default_operator: 'AND',
                 flags: QUERY_FLAGS,
+                lenient: true,
             },
         }
         : {
@@ -172,6 +180,7 @@ function buildQuery(p) {
                 operator: 'or',
                 minimum_should_match: '30%',
                 tie_breaker: 0.3,
+                lenient: true,
             },
         };
 

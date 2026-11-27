@@ -74,9 +74,13 @@ def request(method, url, body=None, headers=None):
         return e.code, e.read().decode()
 
 
-def doc(title, body, type_, url, breadcrumb):
+def doc(title, body, type_, url, breadcrumb, description=None, user_questions=None):
     d = {"title": title, "body": body, "text": body, "type": type_, "url": url, "uri": url,
-         "breadcrumb": breadcrumb, "description": title + " description"}
+         "breadcrumb": breadcrumb}
+    if description:
+        d["description"] = description
+    if user_questions:
+        d["user_questions"] = user_questions
     for i, b in enumerate(breadcrumb):
         d[f"breadcrumb_{i + 1}"] = b
     return d
@@ -111,10 +115,17 @@ def seed():
                           "https://docs.giantswarm.io/reference/autoscaler/", ["reference"])),
         ("docs", "3", doc("Markdown bold", "Write **bold** text with two asterisks.", "Documentation",
                           "https://docs.giantswarm.io/reference/markdown/", ["reference", "markdown"])),
+        ("docs", "4", doc("Egress rules", "Lists the hosts the platform connects to.", "Documentation",
+                          "https://docs.giantswarm.io/security/egress/", ["security", "egress"],
+                          description="Outbound connections a proxy must permit.",
+                          user_questions=["Which domains does my firewall need to allow?"])),
         ("handbook", "1", doc("Node pool etiquette", "Handbook page about node pools.", "Handbook",
                               "https://handbook.giantswarm.io/docs/node-pools/", ["docs"])),
+        # mapping-blog.json doesn't map user_questions, so this date-like
+        # value maps it as a date, like an index built before the indexer
+        # mapped the field.
         ("blog", "1", doc("Node pools are here", "Blog post announcing node pools.", "Blog",
-                          "https://www.giantswarm.io/blog/node-pools", ["blog"])),
+                          "https://www.giantswarm.io/blog/node-pools", ["blog"], user_questions="2024-01-15")),
         ("intranet", "/docs/secret/", doc("Secret plan", f"The {SECRET} node pools plan is confidential.", "Intranet",
                                           "https://intranet.giantswarm.io/docs/secret/", ["docs", "secret"])),
     ]
@@ -196,6 +207,21 @@ class Gateway(unittest.TestCase):
         titles = [h["_source"]["title"] for h in ok("q=autosca")["hits"]["hits"]]
         self.assertIn("Cluster autoscaler", titles)
         self.assertEqual(ok("q=au")["hits"]["total"]["value"], 0)
+
+    def test_front_matter_fields_are_searched(self):
+        # "firewall" is only in user_questions and "proxy" only in the
+        # description. "allowing" matches "allow" only through the english
+        # analyzer.
+        for q in ["firewall", "proxy", "allowing"]:
+            with self.subTest(q):
+                urls = [h["_source"]["url"] for h in ok("q=" + q)["hits"]["hits"]]
+                self.assertEqual(urls, ["https://docs.giantswarm.io/security/egress/"])
+
+    def test_a_front_matter_field_mapped_as_a_date_does_not_fail_its_index(self):
+        for params in ["q=node+pools&type=Blog", "q=node+pools&type=Blog&match=all"]:
+            with self.subTest(params):
+                titles = [h["_source"]["title"] for h in ok(params)["hits"]["hits"]]
+                self.assertEqual(titles, ["Node pools are here"])
 
     def test_query_syntax_stays_inside_the_query_string(self):
         # Operators the gateway allows are fine; JSON in q is just text.

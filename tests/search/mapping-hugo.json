@@ -62,6 +62,14 @@
         }
       }
     },
+    "description": {
+      "type": "text",
+      "analyzer": "english"
+    },
+    "user_questions": {
+      "type": "text",
+      "analyzer": "english"
+    },
     "date": {
       "type": "date"
     },
